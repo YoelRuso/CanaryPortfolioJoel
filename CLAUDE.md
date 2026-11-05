@@ -46,7 +46,7 @@ Sea cual sea la idea, debe cumplir:
 - Idioma del sitio: inglés (los jueces son de AWS); cambiar a español si Joel lo prefiere.
 - Sobre mí: estudiante de último curso de Ingeniería Informática (ULPGC, Las Palmas de Gran Canaria).
 - Skills: _[Joel indica la lista]_
-- Proyectos (3–4): _[Joel indica nombre, descripción de una frase, tecnologías y enlace si existe]_
+- Proyectos: UniMan, TellMotion, FinanzasApp y Snake. _[Joel indica descripción de una frase, tecnologías y enlace si existe]_
 - Estilo visual: _[Joel decide]_
 - No inventar logros, empleos, métricas ni enlaces. Si falta un dato, dejar un `TODO` visible y avisar.
 
@@ -66,7 +66,8 @@ Sea cual sea la idea, debe cumplir:
 
 ## Subagentes y skills del proyecto
 - Subagentes (`.claude/agents/`): `feature-engineer`, `qa-tester`, `requirements-auditor`, `devlog-writer`.
-- Skills (`.claude/skills/`): `/gitflow`, `/submission-check`, `/devlog`.
+- Skills de proceso (`.claude/skills/`): `/gitflow`, `/submission-check`, `/devlog`.
+- Skills de diseño (`.claude/skills/`): `/visual-direction`, `/agent-ux`, `/motion-craft`, `/project-showcase`.
 - El diseño y las secciones se hacen en la conversación principal, para que Joel opine sobre la marcha.
 
 ## Registro para el write-up (importante: 25 % de la nota)
