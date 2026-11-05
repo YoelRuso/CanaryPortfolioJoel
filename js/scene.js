@@ -20,6 +20,8 @@
     skills: { x: 318, y: 292, top: 70 },
     projects: { x: 236, y: 738, top: 70 },
     summit: { x: 535, y: 500, foot: 96, top: 130, ink: true },
+    // The label sits east of the tower, between the Finanzas and UniMan buoys, so it doesn't cover them.
+    lighthouse: { x: 502, y: 832, foot: 23, top: 62, labelX: 590, labelY: 815, ink: true },
     tellmotion: { x: 345, y: 868, top: 45 },
     finanzas: { x: 505, y: 918, top: 45 },
     uniman: { x: 668, y: 880, top: 45 },
@@ -34,12 +36,16 @@
     var el = document.querySelector('[data-pin="' + name + '"]');
     if (!el) return;
     var foot = anchor(point.x, point.y, point.foot || 0);
-    var top = anchor(point.x, point.y, point.top);
+    // A label can sit off to one side (labelX/labelY) when straight above would crowd another.
+    var top = anchor(point.labelX || point.x, point.labelY || point.y, point.top);
     var line = document.createElementNS(SVG_NS, 'line');
     if (point.ink) line.setAttribute('class', 'is-ink');
     stems.appendChild(line);
     pins[name] = { el: el, foot: foot, top: top, line: line, o: 0 };
   });
+  // The lighthouse label's stem starts from the lantern of the tower itself.
+  var lantern = document.querySelector('.lh-point');
+  if (pins.lighthouse && lantern) pins.lighthouse.foot = lantern;
 
   function anchor(x, y, z) {
     var el = document.createElement('i');
@@ -69,10 +75,10 @@
           fx: buoy ? buoy.x : 575, fy: buoy ? buoy.y : 830,
           zoom: buoy ? (narrow ? 1.8 : 2.1) : (narrow ? 1.3 : 1.45),
           rx: 62, rz: buoy ? -6 : 0, sx: narrow ? 0 : 0.06 * w, sy: narrow ? -0.13 * h : -0.18 * h,
-          deep: name === 'footer' ? 1 : 0.85, spread: 1.2, pins: BUOYS
+          deep: name === 'footer' ? 1 : 0.85, spread: 1.2, pins: BUOYS.concat('lighthouse')
         };
       default:
-        return { fx: 500, fy: 500, zoom: narrow ? 0.9 : 1, rx: 54, rz: -12, sx: narrow ? 0 : 0.22 * w, sy: narrow ? 0.3 * h : 0.02 * h, deep: 0, spread: 1, pins: ['about', 'skills', 'projects', 'summit'] };
+        return { fx: 500, fy: 500, zoom: narrow ? 0.9 : 1, rx: 54, rz: -12, sx: narrow ? 0 : 0.22 * w, sy: narrow ? 0.3 * h : 0.02 * h, deep: 0, spread: 1, pins: ['about', 'skills', 'projects', 'summit', 'lighthouse'] };
     }
   }
 
