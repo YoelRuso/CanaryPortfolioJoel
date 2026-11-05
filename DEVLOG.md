@@ -227,3 +227,17 @@ Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir m
 
 **En qué ayudó el agente de código:** Implementó los arreglos y los verificó con medidas en móvil y escritorio.
 
+## 2026-11-05 — Rendimiento: la fuente ya no bloquea el pintado
+
+**Qué se hizo:** Lighthouse daba 61 de rendimiento en la ventana normal. En incógnito, sin las extensiones del navegador (que sumaban ~545 KiB de JavaScript ajeno a la web), daba 84, con 100 en accesibilidad, buenas prácticas y SEO. El mayor aviso propio era "Solicitudes que bloquean el renderizado": la hoja de Google Fonts. Ahora se precarga y se aplica sin bloquear (`media="print"` que pasa a `all` al cargar, con `<noscript>` de respaldo). El texto aparece al momento en Georgia y cambia a Spectral al llegar.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:** Distinguir qué parte del informe era de la web y qué parte de las extensiones; se resolvió repitiendo la medida en incógnito. Se dejó para después la "redistribución forzada" que causa medir las etiquetas en cada fotograma, porque es un cambio grande en el código más delicado y el cierre está cerca.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Pasó Lighthouse, lo repitió en incógnito y eligió el arreglo.
+
+**En qué ayudó el agente de código:** Interpretó el informe, priorizó los avisos y aplicó el cambio.
+
