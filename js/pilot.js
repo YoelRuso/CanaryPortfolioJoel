@@ -342,6 +342,7 @@
   function openPanel() {
     panel.hidden = false;
     document.documentElement.classList.add('pilot-open');
+    if (scene && scene.redraw) scene.redraw(); // the island re-centres in the space left free
     if (scene) scene.showBoat();
     launcher.hidden = true;
     launcher.setAttribute('aria-expanded', 'true');
@@ -361,6 +362,7 @@
   function closePanel() {
     panel.hidden = true;
     document.documentElement.classList.remove('pilot-open');
+    if (scene && scene.redraw) scene.redraw();
     launcher.hidden = false;
     launcher.setAttribute('aria-expanded', 'false');
     clearSighted();

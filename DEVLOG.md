@@ -241,3 +241,17 @@ Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir m
 
 **En qué ayudó el agente de código:** Interpretó el informe, priorizó los avisos y aplicó el cambio.
 
+## 2026-11-05 — La isla se centra en el hueco libre
+
+**Qué se hizo:** En escritorio, cada pose de la cámara (About, Skills y Projects) calcula el mar libre junto al panel de la sección, restando el panel del piloto si está abierto, y centra ahí la isla. El zoom se reduce un poco si el hueco es estrecho. Si no hay sitio al lado (un portátil con el piloto abierto), la isla pasa a la franja superior de la pantalla. Al abrir o cerrar el piloto se recalcula. En móvil no cambia nada.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:** Antes la isla usaba desplazamientos fijos, sin saber dónde estaban los paneles, y en Projects la boya de TellMotion quedaba tapada. Se probó a 1280 px y a 1882 px, con y sin piloto: a 1280 px sin piloto, las cuatro boyas y el faro caben entre 819 y 1250 px, con el panel acabando en 824.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Pidió que en Projects la isla se viera más y más centrada.
+
+**En qué ayudó el agente de código:** Calculó el hueco libre por pose y ajustó zoom y caso estrecho.
+
