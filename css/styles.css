@@ -271,7 +271,7 @@ h2 { font-weight: 400; font-style: italic; font-size: 1.05rem; color: var(--ink-
   cursor: pointer; list-style: none;
 }
 .project summary::-webkit-details-marker { display: none; }
-.project summary p { grid-column: 1 / -1; }
+.project summary .lede { display: block; grid-column: 1 / -1; }
 .project h3 { font-weight: 300; font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.75rem); line-height: 1.05; }
 .project-lead h3 { font-size: clamp(2.4rem, 1.6rem + 3vw, 4rem); letter-spacing: -0.015em; }
 .project summary:hover h3 { color: var(--magenta-light); }

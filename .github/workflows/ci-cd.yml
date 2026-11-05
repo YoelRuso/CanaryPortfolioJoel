@@ -1,0 +1,101 @@
+# CI/CD for the portfolio.
+# - Every push and pull request runs the tests.
+# - A push to main that passes the tests is deployed to AWS Amplify Hosting.
+# AWS access uses OpenID Connect: GitHub gets short-lived credentials by assuming an IAM role,
+# so no AWS keys are stored in GitHub. Setup steps are in docs/aws-deploy.md.
+name: CI/CD
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'release/**', 'hotfix/**']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: JavaScript syntax
+        run: |
+          for file in js/*.js; do
+            node --check "$file"
+            echo "OK $file"
+          done
+
+      - name: Valid HTML
+        run: npx --yes html-validate@9.7.1 index.html
+
+  deploy:
+    name: Deploy to Amplify
+    needs: test
+    # Only main is deployed, and only once the AWS settings exist in the repository variables.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.AMPLIFY_APP_ID != ''
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    permissions:
+      contents: read
+      id-token: write   # lets the job request the OIDC token used to assume the AWS role
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      APP_ID: ${{ vars.AMPLIFY_APP_ID }}
+      BRANCH: main
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package the website
+        # Only the files the site needs: no project notes, tools or agent settings.
+        run: |
+          mkdir dist
+          cp -r index.html css js assets dist/
+          cd dist && zip -qr ../site.zip .
+          ls -l ../site.zip
+
+      - name: Get AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Upload and start the Amplify deployment
+        run: |
+          deployment=$(aws amplify create-deployment --app-id "$APP_ID" --branch-name "$BRANCH")
+          job_id=$(echo "$deployment" | jq -r '.jobId')
+          upload_url=$(echo "$deployment" | jq -r '.zipUploadUrl')
+          curl --fail --silent --show-error -X PUT -T site.zip "$upload_url"
+          aws amplify start-deployment --app-id "$APP_ID" --branch-name "$BRANCH" --job-id "$job_id"
+          echo "JOB_ID=$job_id" >> "$GITHUB_ENV"
+
+      - name: Wait for the deployment to finish
+        run: |
+          for attempt in $(seq 1 60); do
+            status=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH" --job-id "$JOB_ID" --query 'job.summary.status' --output text)
+            echo "Deployment $JOB_ID: $status"
+            case "$status" in
+              SUCCEED) exit 0 ;;
+              FAILED|CANCELLED) exit 1 ;;
+            esac
+            sleep 5
+          done
+          echo "Timed out waiting for Amplify"
+          exit 1
+
+      - name: Show the live URL
+        run: |
+          domain=$(aws amplify get-app --app-id "$APP_ID" --query 'app.defaultDomain' --output text)
+          echo "Live: https://$BRANCH.$domain" | tee -a "$GITHUB_STEP_SUMMARY"
