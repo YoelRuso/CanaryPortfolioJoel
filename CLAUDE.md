@@ -34,29 +34,40 @@ Se despliega con **AWS Amplify Hosting** y el código vive en un repo de GitHub.
 - Accesible: HTML semántico, contraste suficiente, navegación por teclado, `alt` en imágenes, `prefers-reduced-motion` respetado.
 - Rendimiento: sin imágenes pesadas, fuentes del sistema o una sola fuente web.
 
-## Función creativa (por defecto, confirmar con Joel)
-Terminal interactiva en el navegador donde el visitante escribe comandos para explorar el portfolio
-(`help`, `about`, `skills`, `projects`, `contact`, `clear`, y algún comando secreto/easter egg).
-Reglas de diseño:
-- Pista visible y permanente (por ejemplo un botón o texto "pulsa `~` o haz clic aquí para abrir la terminal").
-- Cerrada por defecto; se abre como panel/overlay que se puede cerrar con `Esc` y con un botón.
-- La web debe ser completamente navegable sin usar la terminal.
-- Funciona con teclado en escritorio y con el teclado táctil en móvil.
+## Función creativa (pendiente: la decide Joel)
+Aún sin definir. Joel descartó la terminal interactiva por estar muy vista; no proponerla ni implementarla.
+Sea cual sea la idea, debe cumplir:
+- Pista visible y permanente para descubrirla.
+- No estorbar: se puede cerrar o ignorar, y la web es completamente navegable sin usarla.
+- Funciona con teclado y ratón en escritorio, y con pantalla táctil en móvil.
+- Respeta `prefers-reduced-motion`.
 
 ## Contenido (a completar con Joel — no inventar datos)
 - Idioma del sitio: inglés (los jueces son de AWS); cambiar a español si Joel lo prefiere.
 - Sobre mí: estudiante de último curso de Ingeniería Informática (ULPGC, Las Palmas de Gran Canaria).
 - Skills: _[Joel indica la lista]_
 - Proyectos (3–4): _[Joel indica nombre, descripción de una frase, tecnologías y enlace si existe]_
-- Estilo visual: _[oscuro/minimalista/retro-terminal — Joel decide]_
+- Estilo visual: _[Joel decide]_
 - No inventar logros, empleos, métricas ni enlaces. Si falta un dato, dejar un `TODO` visible y avisar.
 
 ## Flujo de trabajo
-1. Estructura base: `index.html`, `css/styles.css`, `js/main.js`, `js/terminal.js`, `assets/`.
+1. Estructura base: `index.html`, `css/styles.css`, `js/main.js`, un archivo JS propio para la función creativa, `assets/`.
 2. Construir las tres secciones y la navegación primero; la función creativa después.
 3. Probar en local (servidor estático simple) en móvil y escritorio antes de cada despliegue.
-4. Commits pequeños y con mensajes claros; Amplify despliega desde la rama `main`.
-5. Antes de dar algo por terminado, revisar el checklist de requisitos de arriba.
+4. Commits pequeños y con mensajes claros, siguiendo Gitflow; Amplify despliega desde la rama `main`.
+5. Antes de dar algo por terminado, revisar el checklist de requisitos de arriba (`/submission-check`).
+
+## Git (Gitflow)
+- Ramas fijas: `main` (producción) y `develop` (integración). No trabajar directamente en ellas.
+- Ramas de trabajo en kebab-case: `feature/<nombre>`, `release/<x.y.z>`, `hotfix/<nombre>`.
+- Commits con Conventional Commits: `tipo(ámbito): descripción`, en inglés e imperativo.
+- Merges con `--no-ff` y versiones con tags `vX.Y.Z`. Procedimiento completo en `/gitflow`.
+- **Claude nunca aparece como autor ni coautor**: sin `Co-Authored-By` ni líneas de atribución en commits o PR.
+
+## Subagentes y skills del proyecto
+- Subagentes (`.claude/agents/`): `feature-engineer`, `qa-tester`, `requirements-auditor`, `devlog-writer`.
+- Skills (`.claude/skills/`): `/gitflow`, `/submission-check`, `/devlog`.
+- El diseño y las secciones se hacen en la conversación principal, para que Joel opine sobre la marcha.
 
 ## Registro para el write-up (importante: 25 % de la nota)
 Mantener un archivo `DEVLOG.md` y actualizarlo tras cada hito con:
