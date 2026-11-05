@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joel Morera Apaza</title>
+  <meta name="description" content="Portfolio of Joel Morera Apaza, a final-year Computer Engineering student at ULPGC who builds open-source tools that explain technical ideas visually.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#about">Skip to content</a>
+
+  <header class="site-header">
+    <a class="site-name" href="#top">Joel Morera Apaza</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- The island stays behind the whole page. Scrolling moves the camera from port to port. -->
+  <div class="scene" data-scene aria-hidden="true">
+    <div class="scene-view">
+      <div class="scene-stage" data-stage>
+        <img class="layer layer-sea layer-crop" style="--z:-66;--bx:77;--by:83;--bw:845;--bh:850" src="assets/chart/sea-1.svg" alt="" width="845" height="850">
+        <img class="layer layer-sea layer-crop" style="--z:-50;--bx:88;--by:89;--bw:825;--bh:830" src="assets/chart/sea-2.svg" alt="" width="825" height="830">
+        <img class="layer layer-sea layer-crop" style="--z:-35;--bx:98;--by:97;--bw:795;--bh:807" src="assets/chart/sea-3.svg" alt="" width="795" height="807">
+        <img class="layer layer-sea layer-crop" style="--z:-21;--bx:130;--by:121;--bw:742;--bh:767" src="assets/chart/sea-4.svg" alt="" width="742" height="767">
+        <img class="layer layer-sea layer-crop" style="--z:-9;--bx:164;--by:150;--bw:684;--bh:718" src="assets/chart/sea-5.svg" alt="" width="684" height="718">
+        <svg class="layer layer-route" style="--z:0" viewBox="0 0 1000 1000">
+          <path class="course" data-course d="M 990 140 C 900 190 840 230 790 262 C 700 120 480 110 318 292 C 200 360 105 480 140 600 C 160 670 195 715 236 738 C 280 800 300 850 345 868 C 400 890 450 912 505 918 C 570 925 620 905 668 880 C 720 852 770 812 800 772"/>
+          <circle class="port-mark" cx="790" cy="262" r="9"/>
+          <circle class="port-mark" cx="318" cy="292" r="9"/>
+          <circle class="port-mark" cx="236" cy="738" r="9"/>
+          <circle class="buoy-mark" cx="345" cy="868" r="6"/>
+          <circle class="buoy-mark" cx="505" cy="918" r="6"/>
+          <circle class="buoy-mark" cx="668" cy="880" r="6"/>
+          <circle class="buoy-mark" cx="800" cy="772" r="6"/>
+          <path id="sea-curve" fill="none" d="M 380 975 C 470 995 560 995 660 975"/>
+          <text class="sea-name"><textPath href="#sea-curve">Atlantic Ocean</textPath></text>
+        </svg>
+        <img class="layer layer-land layer-crop" style="--z:6;--bx:186;--by:170;--bw:636;--bh:671" src="assets/chart/land-1.svg" alt="" width="636" height="671">
+        <img class="layer layer-land layer-crop" style="--z:21;--bx:192;--by:212;--bw:538;--bh:544" src="assets/chart/land-2.svg" alt="" width="538" height="544">
+        <img class="layer layer-land layer-crop" style="--z:36;--bx:200;--by:274;--bw:494;--bh:439" src="assets/chart/land-3.svg" alt="" width="494" height="439">
+        <img class="layer layer-land layer-crop" style="--z:51;--bx:235;--by:314;--bw:424;--bh:364" src="assets/chart/land-4.svg" alt="" width="424" height="364">
+        <img class="layer layer-land layer-crop" style="--z:66;--bx:296;--by:348;--bw:335;--bh:266" src="assets/chart/land-5.svg" alt="" width="335" height="266">
+        <img class="layer layer-land layer-crop" style="--z:81;--bx:454;--by:380;--bw:148;--bh:161" src="assets/chart/land-6.svg" alt="" width="148" height="161">
+        <img class="layer layer-land layer-crop" style="--z:96;--bx:515;--by:480;--bw:56;--bh:38" src="assets/chart/land-7.svg" alt="" width="56" height="38">
+        <img class="layer layer-cloud" style="--z:125" src="assets/chart/clouds.svg" alt="" width="1000" height="1000">
+      </div>
+    </div>
+    <div class="scene-tint"></div>
+    <svg class="scene-stems" data-stems></svg>
+  </div>
+
+  <!-- Labels drawn on top of the island; only the ones for the current part of the page show. -->
+  <nav class="pins" aria-label="Chart of the island">
+    <a class="pin pin-port" data-pin="about" href="#about"><span>About<small>Puerto de la Luz</small></span></a>
+    <a class="pin pin-port" data-pin="skills" href="#skills"><span>Skills<small>Puerto de las Nieves</small></span></a>
+    <a class="pin pin-port" data-pin="projects" href="#projects"><span>Projects<small>Puerto de Mogán</small></span></a>
+    <span class="pin pin-peak" data-pin="summit" aria-hidden="true"><span>Pico de las Nieves<small>1,949 m</small></span></span>
+    <a class="pin pin-buoy" data-pin="tellmotion" href="#tellmotion"><span>TellMotion</span></a>
+    <a class="pin pin-buoy" data-pin="finanzas" href="#finanzas"><span>Finanzas App</span></a>
+    <a class="pin pin-buoy" data-pin="uniman" href="#uniman"><span>UniMan</span></a>
+    <a class="pin pin-buoy" data-pin="snake" href="#snake"><span>Snake</span></a>
+  </nav>
+
+  <main>
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <div class="hero-text">
+        <h1 id="hero-name">Joel<br>Morera<br>Apaza</h1>
+        <p class="hero-lede">Final-year Computer Engineering student in Las Palmas de Gran Canaria. I build open-source tools that explain technical ideas visually.</p>
+        <p class="hero-actions" data-pilot-only hidden>
+          <button class="button" type="button" data-pilot-start>
+            <svg class="flag-h" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="1" y="3" width="11" height="18" fill="#fff"/><rect x="12" y="3" width="11" height="18" fill="#d6102c"/><rect x="1" y="3" width="22" height="18" fill="none" stroke="#fff" stroke-width="1.5"/></svg>
+            Take the pilot’s tour
+          </button>
+          <span class="hero-note">The pilot sails you round the island to each part of this page. Or just scroll: the island comes with you.</span>
+        </p>
+        <p class="visually-hidden">Behind this page is a relief model of Gran Canaria built from real elevation data. As you scroll, it turns to a different port for each section.</p>
+      </div>
+    </section>
+
+    <section class="depth depth-about" id="about" aria-labelledby="about-title" data-pose="about">
+      <div class="panel" data-target="about">
+        <h2 id="about-title">About me</h2>
+        <p class="big">I study on an island, so I drew this site as a chart of it.</p>
+        <p>I’m in the final year of Computer Engineering at ULPGC, the university of Las Palmas de Gran Canaria. I build educational animations and open-source tools that explain technical ideas visually.</p>
+        <p>I also enjoy full-stack and cloud projects, and I like designing and testing cloud architectures on my own machine.</p>
+        <p>As a kid I took apart every gadget I could, just to look at the circuit boards inside. I had no idea how they worked, but I loved them. I didn’t write a line of code until my first year at university, starting from zero. In my third year, a lecturer who taught software engineering with real passion got me hooked.</p>
+        <p>Now I build things that make my life easier and help me get better. After my degree, I want to start a company with my brother, building software and solutions for other businesses and people.</p>
+        <ul class="links">
+          <li><a href="https://github.com/YoelRuso" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/joel-morera-apaza-101417251/" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="depth depth-skills" id="skills" aria-labelledby="skills-title" data-pose="skills">
+      <div class="panel panel-wide">
+        <h2 id="skills-title">Skills and tech superpowers</h2>
+        <p class="big superpower" data-target="superpower">My superpower is making technical ideas visible. <a href="#tellmotion">TellMotion</a> is that idea turned into a tool.</p>
+
+        <dl class="legend" data-target="stack">
+          <div><dt>Languages</dt><dd>TypeScript, JavaScript, Java, Python, Kotlin, C, R</dd></div>
+          <div><dt>Frontend</dt><dd>React, Next.js, Angular, Vite, Tailwind CSS, Electron, Jetpack Compose</dd></div>
+          <div><dt>Backend and data</dt><dd>Node.js, Fastify, Express, FastAPI, Prisma, PostgreSQL, Redis, SQLite, Firebase</dd></div>
+          <div><dt>Cloud and DevOps</dt><dd>AWS, Terraform, LocalStack, Docker, Git, GitHub</dd></div>
+          <div><dt>Data and ML</dt><dd>PyTorch, scikit-learn, pandas, Jupyter</dd></div>
+        </dl>
+
+        <div class="cloud" data-target="cloud">
+          <h3>Cloud, in practice</h3>
+          <p>I write Infrastructure as Code with Terraform against AWS services emulated locally with LocalStack and Docker: S3, SQS, Lambda, DynamoDB, IAM and CloudWatch. This site is hosted for real, on AWS Amplify Hosting.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="depth depth-projects" id="projects" aria-labelledby="projects-title" data-pose="projects">
+      <div class="panel panel-deep panel-wide">
+        <h2 id="projects-title">Projects</h2>
+        <p class="panel-note">Each project is a buoy off the south coast. Open one and the chart turns to it.</p>
+
+        <details class="project project-lead" id="tellmotion" data-target="tellmotion" data-buoy="tellmotion">
+          <summary>
+            <h3>TellMotion</h3>
+            <p>An open-source skill for AI coding agents that turns an idea into a polished 2D explainer animation.</p>
+            <span class="more">Project notes</span>
+          </summary>
+          <div class="notes">
+            <p>You describe what to explain, pick a look from a theme catalog, and approve a storyboard before anything is animated. Each theme is a single JSON file that drives both the preview and the animation, so changing style is one command.</p>
+            <p class="stack">Built with Motion Canvas. Open source under the MIT license.</p>
+            <p class="project-links"><a href="https://github.com/YoelRuso/TellMotion" rel="noopener">Code on GitHub</a> <a href="https://yoelruso.github.io/TellMotion/" rel="noopener">Website and theme gallery</a></p>
+          </div>
+        </details>
+
+        <details class="project" id="finanzas" data-target="finanzas" data-buoy="finanzas">
+          <summary>
+            <h3>Finanzas App</h3>
+            <p>A personal finance dashboard with spending charts, AI-powered receipt reading and advice.</p>
+            <span class="more">Project notes</span>
+          </summary>
+          <div class="notes">
+            <p>Photograph a receipt from your phone, and it joins your spending charts along with advice from Gemini.</p>
+            <p class="stack">React, TypeScript, Vite, Tailwind CSS, Recharts. Express, Prisma, PostgreSQL, Gemini.</p>
+            <p class="project-links"><a href="https://github.com/YoelRuso/finanzas-app" rel="noopener">Code on GitHub</a></p>
+          </div>
+        </details>
+
+        <details class="project" id="uniman" data-target="uniman" data-buoy="uniman">
+          <summary>
+            <h3>UniMan</h3>
+            <p>A personal university manager for my timetable, exams, assignments and grades at ULPGC.</p>
+            <span class="more">Project notes</span>
+          </summary>
+          <div class="notes">
+            <p>I built it for my own degree, so it holds what a student checks every week in one place.</p>
+            <p class="stack">TypeScript, Node.js, PostgreSQL, Vite, Docker, Caddy. The code is in a private repository.</p>
+          </div>
+        </details>
+
+        <details class="project" id="snake" data-target="snake" data-buoy="snake">
+          <summary>
+            <h3>Snake Multiplayer</h3>
+            <p>A team project: a real-time multiplayer Snake game you play in the browser.</p>
+            <span class="more">Project notes</span>
+          </summary>
+          <div class="notes">
+            <p>I took on most of the project: besides developing the game, I was the team’s DevOps.</p>
+            <p>The server runs game rooms and shared state, and everyone on the team develops inside the same Docker setup.</p>
+            <p class="stack">Phaser, Colyseus, Firebase, Docker.</p>
+            <p class="project-links"><a href="https://github.com/Alejajandro05/Proyecto-Snake-multijugador" rel="noopener">Code on GitHub</a> <span class="aside">The repository belongs to a teammate.</span></p>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact" data-target="contact">
+    <div class="wrap footer-grid">
+      <div>
+        <h2>Find me</h2>
+        <ul class="links">
+          <li><a href="https://github.com/YoelRuso" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/joel-morera-apaza-101417251/" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+      <p class="colophon" data-target="site">Plain HTML, CSS and JavaScript, hosted on AWS Amplify Hosting. Coastline and relief from <a href="https://registry.opendata.aws/terrain-tiles/" rel="noopener">Terrain Tiles on the AWS Open Data registry</a> (<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" rel="noopener">sources</a>); sea depths are stylised. Not to be used for navigation.</p>
+    </div>
+  </footer>
+
+  <button class="pilot-launcher" type="button" data-pilot-launcher aria-expanded="false" aria-controls="pilot-panel" hidden>
+    <svg class="flag-h" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="1" y="3" width="11" height="18" fill="#fff"/><rect x="12" y="3" width="11" height="18" fill="#d6102c"/><rect x="1" y="3" width="22" height="18" fill="none" stroke="#fff" stroke-width="1.5"/></svg>
+    <span>Ask the pilot</span>
+  </button>
+
+  <aside class="pilot-panel" id="pilot-panel" role="dialog" aria-labelledby="pilot-title" hidden>
+    <header class="pilot-head">
+      <svg class="pilot-avatar" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+        <rect x="4" y="7" width="16" height="26" fill="#fff" stroke="#13324b" stroke-width="1.5"/>
+        <rect x="20" y="7" width="16" height="26" fill="#d6102c" stroke="#13324b" stroke-width="1.5"/>
+      </svg>
+      <div>
+        <h2 id="pilot-title" tabindex="-1">Pilot on board</h2>
+        <p>Flag H: a scripted guide, no AI</p>
+      </div>
+      <button class="pilot-close" type="button" data-pilot-close aria-label="Close the pilot">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg>
+      </button>
+    </header>
+    <div class="pilot-log" data-pilot-log role="log" aria-live="polite" tabindex="0" aria-label="Conversation"></div>
+    <div class="pilot-chips" data-pilot-chips></div>
+    <form class="pilot-form" data-pilot-form>
+      <label class="visually-hidden" for="pilot-input">Ask the pilot</label>
+      <input id="pilot-input" type="text" autocomplete="off" placeholder="Try “take me to Snake”" maxlength="120">
+      <button type="submit">Send</button>
+    </form>
+  </aside>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/scene.js" defer></script>
+  <script src="js/pilot.js" defer></script>
+</body>
+</html>
