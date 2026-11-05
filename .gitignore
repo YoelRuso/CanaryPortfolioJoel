@@ -1,0 +1,20 @@
+# Claude Code: local settings and worktrees
+.claude/settings.local.json
+.claude/worktrees/
+
+# Secrets (never commit)
+.env
+.env.*
+*.pem
+*.key
+.aws/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python (local static server)
+__pycache__/
