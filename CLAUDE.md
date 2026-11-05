@@ -34,9 +34,10 @@ Se despliega con **AWS Amplify Hosting** y el código vive en un repo de GitHub.
 - Accesible: HTML semántico, contraste suficiente, navegación por teclado, `alt` en imágenes, `prefers-reduced-motion` respetado.
 - Rendimiento: sin imágenes pesadas, fuentes del sistema o una sola fuente web.
 
-## Función creativa (pendiente: la decide Joel)
-Aún sin definir. Joel descartó la terminal interactiva por estar muy vista; no proponerla ni implementarla.
-Sea cual sea la idea, debe cumplir:
+## Función creativa: agente simulado
+Decidido por Joel: un agente conversacional sin IA real (guion escrito en el navegador, sin coste ni backend) que actúa sobre la web, llevando al visitante a las secciones y proyectos. Diseño y reglas en `/agent-ux`.
+La terminal interactiva está descartada por estar muy vista; no proponerla ni implementarla.
+Debe cumplir:
 - Pista visible y permanente para descubrirla.
 - No estorbar: se puede cerrar o ignorar, y la web es completamente navegable sin usarla.
 - Funciona con teclado y ratón en escritorio, y con pantalla táctil en móvil.
