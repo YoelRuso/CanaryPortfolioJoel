@@ -59,7 +59,7 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 - El piloto ya no dibuja una línea: su barco navega por la ruta 3D, la cámara lo sigue y la página atraca en la sección.
 - El piloto tiene personaje: la bandera H del código internacional ("llevo práctico a bordo"), respuestas que se escriben poco a poco y variadas, saludo según la hora y preguntas sobre la isla (cumbre, Teide, nubes, de dónde salen los datos).
 
-**Servicios de AWS y configuración:** Sin cambios. Datos de relieve de AWS Open Data, hosting en Amplify (pendiente).
+**Servicios de AWS y configuración:** Sin cambios. Datos de relieve de AWS Open Data, hosting en Amplify (desplegado después, ver hito de CI/CD).
 
 **Retos y cómo se resolvieron:**
 - Las etiquetas de la isla deben verse solo en su sección. Cada pose de cámara dice qué etiquetas muestra, y la opacidad se mezcla con el scroll.
@@ -129,6 +129,9 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 - `html-validate` detectó `<p>` dentro de `<summary>`, que no está permitido. Se cambió por `<span>`.
 - Los estilos en línea que marcaba son variables de posición de las capas (datos, no estilo), así que esa regla se desactivó en `.htmlvalidate.json`.
 - Con el despliegue desde Actions, `amplify.yml` dejó de hacer falta y se eliminó.
+- Primer despliegue: `Not authorized to perform sts:AssumeRoleWithWebIdentity`. El repo usa el formato nuevo del claim `sub` de GitHub, con IDs numéricos (`repo:YoelRuso@116205447/CanaryPortfolioJoel@1447465204:environment:production`), y la política de confianza solo tenía el formato clásico. Se vio con `gh api repos/.../actions/oidc/customization/sub` y se aceptaron los dos formatos.
+- Segundo: `AccessDenied` en `amplify:CreateDeployment`. Esa acción actúa sobre `branches/main/deployments/*`, que faltaba en la política de permisos. Se añadió ese recurso, sin ampliar nada más.
+- Resultado: el workflow pasa tests y despliega en ~40 s. Web en vivo en https://main.d1zb8l9pcqy7u2.amplifyapp.com (Amplify en eu-north-1, Estocolmo).
 
 **Qué se aprendió:** TODO (Joel)
 
