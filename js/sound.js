@@ -3,7 +3,7 @@
 //   with a soft hiss of foam and drawing back, over a very faint background.
 // - Departure: a ship's horn (two low notes together, brassy, with an echo over the water).
 // - Voyage: water rushing past the hull while the boat moves.
-// - Arrival: two strikes of the ship's bell.
+// - Arrival: three strokes of the ship's bell, with a long ring.
 // Sound is off by default and only starts when the visitor turns it on (browsers
 // require a click before playing audio anyway). The choice is remembered.
 (function () {
@@ -199,17 +199,35 @@
   }
 
   /* Arrival: the ship's bell */
+  // The bell has its own, longer and fuller echo, so it rings out instead of sounding dry.
+  var bellReverb = null;
+  function bellSpace() {
+    if (bellReverb) return bellReverb;
+    var length = Math.floor(ctx.sampleRate * 4.5), buffer = ctx.createBuffer(2, length, ctx.sampleRate);
+    for (var c = 0; c < 2; c++) {
+      var data = buffer.getChannelData(c);
+      for (var i = 0; i < length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+    }
+    bellReverb = ctx.createConvolver();
+    bellReverb.buffer = buffer;
+    var wet = ctx.createGain();
+    wet.gain.value = 0.9;
+    bellReverb.connect(wet).connect(master);
+    return bellReverb;
+  }
+
   function bell(at) {
-    var base = 980, out = ctx.createGain();
-    out.gain.value = 0.55;
+    var base = 840, out = ctx.createGain();
+    out.gain.value = 0.4;
     out.connect(master);
-    out.connect(reverb);
+    out.connect(bellSpace());
 
     // Bell partials are not whole multiples. Each one is a close pair, which
-    // gives the slow shimmer a real bell has, and higher ones die away faster.
+    // gives the slow shimmer a real bell has. Bronze keeps ringing: the low
+    // partials last several seconds, the high ones fade first.
     var partials = [
-      [0.5, 0.18, 3.8], [1, 0.32, 3.2], [1.19, 0.16, 2.4], [1.5, 0.11, 2.0],
-      [2, 0.12, 1.6], [2.52, 0.07, 1.1], [2.68, 0.06, 1.0], [3.01, 0.05, 0.8], [4.07, 0.03, 0.5]
+      [0.5, 0.16, 8.5], [1, 0.3, 7], [1.19, 0.15, 5.5], [1.5, 0.1, 4.5],
+      [2, 0.11, 3.6], [2.52, 0.06, 2.6], [2.68, 0.05, 2.3], [3.01, 0.04, 1.8], [4.07, 0.025, 1.1]
     ];
     partials.forEach(function (p) {
       [-0.6, 0.6].forEach(function (beat) {
@@ -228,10 +246,11 @@
     // The strike of the clapper: a very short metallic click.
     var click = ctx.createBufferSource(), clickFilter = ctx.createBiquadFilter(), clickGain = ctx.createGain();
     click.buffer = pinkNoise;
-    clickFilter.type = 'highpass';
-    clickFilter.frequency.value = 3000;
-    clickGain.gain.setValueAtTime(0.25, at);
-    clickGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.03);
+    clickFilter.type = 'bandpass';
+    clickFilter.frequency.value = 2200;
+    clickFilter.Q.value = 0.8;
+    clickGain.gain.setValueAtTime(0.1, at);
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.02);
     click.connect(clickFilter).connect(clickGain).connect(out);
     click.start(at, rand(0, 2));
     click.stop(at + 0.05);
@@ -270,8 +289,9 @@
   document.addEventListener('island:arrive', function () {
     if (!on || !ctx) return;
     var now = ctx.currentTime;
-    bell(now + 0.05);
-    bell(now + 0.75); // two bells, struck in a pair
+    bell(now + 0.05);  // three strokes of the bell, unhurried
+    bell(now + 1.35);
+    bell(now + 2.65);
   });
 
   // Quiet while the page is in the background.
@@ -300,6 +320,6 @@
     isOn: function () { return on; },
     state: function () { return ctx ? ctx.state : 'not started'; }, // 'running' when audio is playing
     // For trying the sounds from the browser console.
-    preview: { horn: function () { if (ctx) horn(); }, bell: function () { if (ctx) bell(ctx.currentTime + 0.05); }, wave: function () { if (ctx) wave(); } }
+    preview: { horn: function () { if (ctx) horn(); }, bell: function () { if (ctx) { var t = ctx.currentTime; bell(t + 0.05); bell(t + 1.35); bell(t + 2.65); } }, wave: function () { if (ctx) wave(); } }
   };
 })();
