@@ -286,7 +286,18 @@
       pin.o += (o - pin.o) * (reduceMotion.matches ? 1 : 0.25);
       if (pin.o >= 0.02) out[name] = { top: pin.top.getBoundingClientRect(), foot: pin.foot.getBoundingClientRect() };
     });
+    // What can cover a label: the panels, header, footer and the pilot.
+    out.covers = Array.prototype.map.call(
+      document.querySelectorAll('.panel, .site-header, .site-footer, #pilot-panel:not([hidden]), .pilot-launcher:not([hidden])'),
+      function (el) { return el.getBoundingClientRect(); });
     return out;
+  }
+
+  // A label link is only reachable with the keyboard while you can actually see it:
+  // on screen and not hidden behind a panel. Otherwise Tab would land on something invisible.
+  function canSee(x, y, covers) {
+    if (x < 8 || x > window.innerWidth - 8 || y < 0 || y > window.innerHeight) return false;
+    return !covers.some(function (r) { return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; });
   }
 
   function placePins(rects) {
@@ -299,6 +310,10 @@
       }
       var top = rects[name].top, foot = rects[name].foot;
       pin.el.classList.toggle('is-on', pin.o > 0.4);
+      if (pin.el.tagName === 'A') {
+        // The label's centre sits about 18px above its anchor point.
+        pin.el.tabIndex = pin.o > 0.4 && canSee(top.left, top.top - 18, rects.covers) ? 0 : -1;
+      }
       pin.el.style.setProperty('--o', pin.o.toFixed(2));
       pin.el.style.setProperty('--px', top.left.toFixed(1) + 'px');
       pin.el.style.setProperty('--py', (top.top + 1).toFixed(1) + 'px');

@@ -210,3 +210,20 @@ Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir m
 
 **En qué ayudó el agente de código:** Las implementó y las comprobó en el navegador de día y de noche.
 
+## 2026-11-05 — Arreglos de usabilidad y accesibilidad (QA)
+
+**Qué se hizo:** Los tres fallos importantes que encontró la prueba en navegador:
+1. **Foco de teclado en etiquetas invisibles:** las etiquetas de la isla que quedan fuera de pantalla o tapadas por un panel salen del orden del tabulador (`tabIndex = -1`) y vuelven en cuanto se ven. Se calcula en cada fotograma, con las posiciones que la escena ya mide.
+2. **Foco invisible en "Ask the pilot" sobre fondo oscuro:** ahora es un anillo blanco con borde azul marino, que se ve sobre cualquier fondo.
+3. **El piloto atracaba en contenido tapado por su panel:** en escritorio, el pie se aparta del panel como ya hacían las secciones; en móvil, con el piloto abierto, el pie gana espacio abajo para que lo marcado suba por encima de la hoja.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:** Las pruebas en el panel del navegador iban con retraso (scroll suave y fotogramas lentos con el panel oculto), y una primera medida engañó. Se repitió esperando a que terminara el scroll. Resultado en móvil: la nota del sitio terminaba en 732 px bajo una hoja que empieza en 456; ahora termina en 432. En escritorio, la nota acaba en 873 px y el panel empieza en 889.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Pidió arreglar los fallos de QA antes del cierre.
+
+**En qué ayudó el agente de código:** Implementó los arreglos y los verificó con medidas en móvil y escritorio.
+
