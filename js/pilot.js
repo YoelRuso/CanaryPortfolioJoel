@@ -124,6 +124,11 @@
       say: ['Those are the trade-wind clouds that pile up on the north side. People here call them panza de burro, donkey’s belly.'],
       chips: CHIPS.end
     },
+    sound: {
+      keys: ['sound', 'audio', 'music', 'waves', 'horn', 'mute', 'noise'],
+      say: ['The speaker at the top right turns the sea on: calm waves, and my horn when we set sail. It stays off until you ask.'],
+      chips: CHIPS.home
+    },
     flag: {
       keys: ['flag', 'boat', 'your boat', 'red and white', 'pilot', 'practico'],
       say: ['That’s flag H from the international code: half white, half red. A ship flies it to say “I have a pilot on board”. You do now.'],

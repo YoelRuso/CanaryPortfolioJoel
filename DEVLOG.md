@@ -138,3 +138,17 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 **Qué hizo Joel:** Pidió usar GitHub Actions para los tests y el despliegue, eligió OIDC y el nombre del repo. Configura AWS y las variables del repo siguiendo la guía.
 
 **En qué ayudó el agente de código:** Escribió el workflow, la guía con las políticas IAM de mínimo privilegio y corrigió el HTML.
+
+## 2026-11-05 — Sonido del mar, bocina y campana
+
+**Qué se hizo:** Sonido generado en el navegador con la Web Audio API, sin archivos de audio. Hay olas tranquilas de fondo (olas sueltas a intervalos irregulares, con espuma suave) y la bocina del barco al zarpar. Está apagado por defecto: se activa con el botón del altavoz de la cabecera, se recuerda la elección y se silencia al cambiar de pestaña. El piloto también responde si le preguntan por el sonido.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:** Los navegadores no dejan reproducir audio sin un clic del usuario. Si el visitante lo dejó activado, el sonido vuelve con su primer clic o tecla en la página. La escena avisa de la salida y la llegada con eventos (`island:depart` e `island:arrive`), así el sonido queda en un archivo aparte. En móvil, el botón nuevo desbordaba la cabecera 16 px, y se ajustaron los espacios.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Propuso añadir el sonido del oleaje, el embarque y el desembarque. Tras escucharlo pidió olas más tranquilas y una bocina más realista, y quitar las campanas y el sonido de la travesía, que sumado a las olas sonaba a que estas subían de golpe.
+
+**En qué ayudó el agente de código:** Diseñó los sonidos con Web Audio, el botón accesible y su integración con la escena y el piloto.
