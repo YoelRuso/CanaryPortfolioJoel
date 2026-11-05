@@ -199,6 +199,8 @@
       trail.style.opacity = 1;
       frameFreeArea();
       document.documentElement.classList.add('is-voyage');
+      // sound.js listens for these to play the horn and the ship's bell.
+      document.dispatchEvent(new CustomEvent('island:depart', { detail: { seconds: sail.duration / 1000 } }));
       override.target = 1;
       kick();
       // If the browser stops drawing frames (a background tab), finish the voyage anyway
@@ -211,6 +213,7 @@
         override.target = 0;
         trail.style.opacity = 0;
         document.documentElement.classList.remove('is-voyage');
+        document.dispatchEvent(new CustomEvent('island:arrive'));
         resolve();
         kick();
       }, thisSail.duration + 2000);
@@ -318,6 +321,7 @@
         override.target = 0;
         trail.style.opacity = 0;
         setTimeout(function () { document.documentElement.classList.remove('is-voyage'); }, 250);
+        document.dispatchEvent(new CustomEvent('island:arrive'));
         done();
       }
     }
