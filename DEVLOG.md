@@ -152,3 +152,18 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 **Qué hizo Joel:** Propuso añadir el sonido del oleaje, el embarque y el desembarque. Tras escucharlo pidió olas más tranquilas y una bocina más realista, y quitar las campanas y el sonido de la travesía, que sumado a las olas sonaba a que estas subían de golpe.
 
 **En qué ayudó el agente de código:** Diseñó los sonidos con Web Audio, el botón accesible y su integración con la escena y el piloto.
+
+## 2026-11-05 — La ruta del barco ya no cruza tierra
+
+**Qué se hizo:** El tramo de About (Puerto de la Luz) a Skills (Agaete) pasaba por encima de La Isleta y de la esquina noroeste de la isla. Ahora rodea La Isleta por el este y por el norte, y sigue la costa norte por el mar.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:** Para no fiarse de la vista se escribió un test pequeño: muestrea la curva de la ruta y comprueba cada punto contra el contorno real de la costa (`land-1.svg`). La ruta antigua tenía 13 puntos sobre tierra. La nueva tiene 0, y su punto más cercano queda a 35 unidades de la costa (unos 2,6 km), para que tampoco parezca tocarla con la perspectiva 3D.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Se dio cuenta de que el barco atravesaba la isla.
+
+**En qué ayudó el agente de código:** Comprobó el fallo con datos, trazó la ruta nueva y verificó que va por mar.
+
