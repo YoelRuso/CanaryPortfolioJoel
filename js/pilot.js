@@ -125,8 +125,8 @@
       chips: CHIPS.end
     },
     sound: {
-      keys: ['sound', 'audio', 'music', 'waves', 'horn', 'bell', 'mute', 'noise'],
-      say: ['The speaker at the top right turns the sea on: waves, my horn when we set sail and the ship’s bell when we dock. It stays off until you ask.'],
+      keys: ['sound', 'audio', 'music', 'waves', 'horn', 'mute', 'noise'],
+      say: ['The speaker at the top right turns the sea on: calm waves, and my horn when we set sail. It stays off until you ask.'],
       chips: CHIPS.home
     },
     flag: {

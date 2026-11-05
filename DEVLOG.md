@@ -141,7 +141,7 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 ## 2026-11-05 — Sonido del mar, bocina y campana
 
-**Qué se hizo:** Sonido generado en el navegador con la Web Audio API, sin archivos de audio. Hay oleaje de fondo (ruido filtrado con una ondulación lenta), la bocina del barco al zarpar, el sonido del agua durante la travesía y tres campanadas largas al atracar. Está apagado por defecto: se activa con el botón del altavoz de la cabecera, se recuerda la elección y se silencia al cambiar de pestaña. El piloto también responde si le preguntan por el sonido.
+**Qué se hizo:** Sonido generado en el navegador con la Web Audio API, sin archivos de audio. Hay olas tranquilas de fondo (olas sueltas a intervalos irregulares, con espuma suave) y la bocina del barco al zarpar. Está apagado por defecto: se activa con el botón del altavoz de la cabecera, se recuerda la elección y se silencia al cambiar de pestaña. El piloto también responde si le preguntan por el sonido.
 
 **Servicios de AWS y configuración:** Sin cambios.
 
@@ -149,6 +149,6 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 **Qué se aprendió:** TODO (Joel)
 
-**Qué hizo Joel:** Propuso añadir el sonido del oleaje, el embarque y el desembarque.
+**Qué hizo Joel:** Propuso añadir el sonido del oleaje, el embarque y el desembarque. Tras escucharlo pidió olas más tranquilas y una bocina más realista, y quitar las campanas y el sonido de la travesía, que sumado a las olas sonaba a que estas subían de golpe.
 
 **En qué ayudó el agente de código:** Diseñó los sonidos con Web Audio, el botón accesible y su integración con la escena y el piloto.

@@ -2,8 +2,6 @@
 // - Sea: separate, quiet waves at irregular intervals, each one swelling, breaking
 //   with a soft hiss of foam and drawing back, over a very faint background.
 // - Departure: a ship's horn (two low notes together, brassy, with an echo over the water).
-// - Voyage: water rushing past the hull while the boat moves.
-// - Arrival: three strokes of the ship's bell, with a long ring.
 // Sound is off by default and only starts when the visitor turns it on (browsers
 // require a click before playing audio anyway). The choice is remembered.
 (function () {
@@ -47,7 +45,7 @@
     return buffer;
   }
 
-  // A generated room/open-air echo, shared by the horn and the bell.
+  // A generated open-air echo for the horn.
   function makeReverb(seconds) {
     var length = Math.floor(ctx.sampleRate * seconds), buffer = ctx.createBuffer(2, length, ctx.sampleRate);
     for (var c = 0; c < 2; c++) {
@@ -57,7 +55,7 @@
     var convolver = ctx.createConvolver();
     convolver.buffer = buffer;
     var wet = ctx.createGain();
-    wet.gain.value = 0.55;
+    wet.gain.value = 0.3;
     convolver.connect(wet).connect(master);
     return convolver;
   }
@@ -179,100 +177,6 @@
     envelope.connect(reverb); // the echo across the water
   }
 
-  /* Voyage: water along the hull */
-  function wash(seconds) {
-    var now = ctx.currentTime, source = ctx.createBufferSource(), filter = ctx.createBiquadFilter(), out = ctx.createGain();
-    source.buffer = pinkNoise;
-    source.loop = true;
-    filter.type = 'bandpass';
-    filter.Q.value = 0.6;
-    filter.frequency.setValueAtTime(500, now);
-    filter.frequency.linearRampToValueAtTime(1100, now + seconds * 0.5);
-    filter.frequency.linearRampToValueAtTime(600, now + seconds);
-    out.gain.setValueAtTime(0.0001, now + 0.6);
-    out.gain.linearRampToValueAtTime(0.14, now + 1.4);
-    out.gain.setValueAtTime(0.14, now + Math.max(1.5, seconds - 0.6));
-    out.gain.linearRampToValueAtTime(0.0001, now + seconds + 0.6);
-    source.connect(filter).connect(out).connect(master);
-    source.start(now);
-    source.stop(now + seconds + 0.7);
-  }
-
-  /* Arrival: the ship's bell */
-  // The bell has its own, longer and fuller echo, so it rings out instead of sounding dry.
-  var bellReverb = null;
-  function bellSpace() {
-    if (bellReverb) return bellReverb;
-    var length = Math.floor(ctx.sampleRate * 4.5), buffer = ctx.createBuffer(2, length, ctx.sampleRate);
-    for (var c = 0; c < 2; c++) {
-      var data = buffer.getChannelData(c);
-      for (var i = 0; i < length; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
-    }
-    bellReverb = ctx.createConvolver();
-    bellReverb.buffer = buffer;
-    var wet = ctx.createGain();
-    wet.gain.value = 0.9;
-    bellReverb.connect(wet).connect(master);
-    return bellReverb;
-  }
-
-  // All strokes of one arrival go through one bus, so a new departure can fade them out.
-  var bellBus = null;
-  function newBellBus() {
-    bellBus = ctx.createGain();
-    bellBus.gain.value = 1;
-    bellBus.connect(master);
-    bellBus.connect(bellSpace());
-    return bellBus;
-  }
-  function hushBells() {
-    if (!bellBus) return;
-    var now = ctx.currentTime;
-    bellBus.gain.cancelScheduledValues(now);
-    bellBus.gain.setValueAtTime(bellBus.gain.value, now);
-    bellBus.gain.linearRampToValueAtTime(0, now + 0.3);
-    bellBus = null;
-  }
-
-  function bell(at, bus) {
-    var base = 840, out = ctx.createGain();
-    out.gain.value = 0.4;
-    out.connect(bus || newBellBus());
-
-    // Bell partials are not whole multiples. Each one is a close pair, which
-    // gives the slow shimmer a real bell has. Bronze keeps ringing: the low
-    // partials last several seconds, the high ones fade first.
-    var partials = [
-      [0.5, 0.16, 5.5], [1, 0.3, 4.5], [1.19, 0.15, 3.6], [1.5, 0.1, 3],
-      [2, 0.11, 2.4], [2.52, 0.06, 1.8], [2.68, 0.05, 1.6], [3.01, 0.04, 1.3], [4.07, 0.025, 0.8]
-    ];
-    partials.forEach(function (p) {
-      [-0.6, 0.6].forEach(function (beat) {
-        var osc = ctx.createOscillator(), level = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = base * p[0] + beat;
-        level.gain.setValueAtTime(0.0001, at);
-        level.gain.linearRampToValueAtTime(p[1] / 2, at + 0.004);
-        level.gain.exponentialRampToValueAtTime(0.0001, at + p[2]);
-        osc.connect(level).connect(out);
-        osc.start(at);
-        osc.stop(at + p[2] + 0.05);
-      });
-    });
-
-    // The strike of the clapper: a very short metallic click.
-    var click = ctx.createBufferSource(), clickFilter = ctx.createBiquadFilter(), clickGain = ctx.createGain();
-    click.buffer = pinkNoise;
-    clickFilter.type = 'bandpass';
-    clickFilter.frequency.value = 2200;
-    clickFilter.Q.value = 0.8;
-    clickGain.gain.setValueAtTime(0.1, at);
-    clickGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.02);
-    click.connect(clickFilter).connect(clickGain).connect(out);
-    click.start(at, rand(0, 2));
-    click.stop(at + 0.05);
-  }
-
   /* On and off */
   function fadeTo(value, seconds) {
     var now = ctx.currentTime;
@@ -298,24 +202,10 @@
     }
   }
 
-  document.addEventListener('island:depart', function (event) {
+  document.addEventListener('island:depart', function () {
     if (!on || !ctx) return;
-    hushBells();
     horn();
-    wash((event.detail && event.detail.seconds) || 2);
   });
-  document.addEventListener('island:arrive', function () {
-    if (!on || !ctx) return;
-    ringBells();
-  });
-
-  // Three strokes, in step with the boat: quick enough to finish before the next voyage.
-  function ringBells() {
-    var now = ctx.currentTime, bus = newBellBus();
-    bell(now + 0.05, bus);
-    bell(now + 0.6, bus);
-    bell(now + 1.15, bus);
-  }
 
   // Quiet while the page is in the background.
   document.addEventListener('visibilitychange', function () {
@@ -343,6 +233,6 @@
     isOn: function () { return on; },
     state: function () { return ctx ? ctx.state : 'not started'; }, // 'running' when audio is playing
     // For trying the sounds from the browser console.
-    preview: { horn: function () { if (ctx) horn(); }, bell: function () { if (ctx) ringBells(); }, wave: function () { if (ctx) wave(); } }
+    preview: { horn: function () { if (ctx) horn(); }, wave: function () { if (ctx) wave(); } }
   };
 })();
