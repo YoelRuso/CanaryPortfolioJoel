@@ -3,8 +3,8 @@
 // - a fish that leaps out of the sea now and then, somewhere along the boat's course
 //   (which is always open water), removed when it lands;
 // - a pair of dolphins that leap beside the pilot's boat while it sails;
-// - night mode: between 20:00 and 07:00 local time the scene turns to dusk and the
-//   lighthouse shines brighter. The pilot can switch it with "night" and "day".
+// - night mode: off by default; the moon button in the header (or asking the pilot for
+//   "night" or "day") turns the scene to moonlight and lights the lighthouse.
 // Leaping animals are skipped for visitors who prefer reduced motion.
 (function () {
   'use strict';
@@ -14,13 +14,30 @@
   var root = document.documentElement;
   if (!life || !course) return;
 
-  /* Night mode (also for reduced motion: it doesn't move) */
+  /* Night mode: off by default, switched with the moon button in the header or by
+     asking the pilot. The choice is remembered. (It doesn't move, so it also works
+     with reduced motion.) */
+  var NIGHT_KEY = 'portfolio-night';
+  var nightButton = document.querySelector('[data-night-toggle]');
+
   function setNight(value) {
     root.classList.toggle('is-night', value);
+    try { localStorage.setItem(NIGHT_KEY, value ? 'on' : 'off'); } catch (e) { /* storage unavailable */ }
+    if (nightButton) {
+      nightButton.setAttribute('aria-pressed', String(value));
+      nightButton.setAttribute('aria-label', value ? 'Switch to day' : 'Switch to night');
+      nightButton.title = value ? 'Night: on' : 'Night: off';
+    }
     if (window.islandScene) window.islandScene.redraw(); // places the lighthouse glow
   }
-  var hour = new Date().getHours();
-  setNight(hour >= 20 || hour < 7);
+
+  var savedNight = false;
+  try { savedNight = localStorage.getItem(NIGHT_KEY) === 'on'; } catch (e) { /* storage unavailable */ }
+  if (savedNight) setNight(true);
+  if (nightButton) {
+    nightButton.hidden = false;
+    nightButton.addEventListener('click', function () { setNight(!root.classList.contains('is-night')); });
+  }
 
   window.islandLife = {
     setNight: setNight,

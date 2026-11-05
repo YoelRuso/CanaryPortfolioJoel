@@ -193,7 +193,7 @@ Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir m
 **Qué se hizo:**
 - **Delfines:** cuando el barco zarpa, una pareja salta junto a él en su misma dirección, dos veces en las travesías largas. La escena expone la posición y el rumbo del barco (`islandScene.boat()`).
 - **Faro de Maspalomas:** en su posición real (27,7353 N, 15,5986 O), comprobada contra la costa del mapa. Es una torre pequeña con el destello magenta de las cartas náuticas y una luz que parpadea cada 5 s.
-- **Modo noche:** entre las 20:00 y las 07:00 de la hora del visitante, la escena pasa a luz de luna y el faro brilla. El piloto lo cambia con "night" o "day".
+- **Modo noche:** la escena pasa a luz de luna y el faro brilla. Al principio se activaba solo entre las 20:00 y las 07:00 de la hora del visitante. Joel prefirió que la web se vea siempre de día y que la noche se ponga a mano, con el botón de luna de la cabecera o pidiéndoselo al piloto ("night" / "day"). La elección se recuerda.
 
 **Servicios de AWS y configuración:** Sin cambios.
 
@@ -201,6 +201,7 @@ Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir m
 - Un tinte azul por multiplicación volvía verde oliva la tierra amarilla. Se añadió antes una capa de mezcla `saturation` que quita casi todo el color, y así queda gris azulado, como a la luz de la luna.
 - El tinte nocturno también apagaba la luz del faro. Su resplandor se dibuja en 2D por encima del tinte, anclado a la punta de la torre, igual que el barco.
 - El texto de la portada se pasa a tinta oscura de noche para mantener el contraste.
+- Con el botón nuevo, la cabecera del móvil no cabía. Se redujeron un poco el texto y los márgenes del menú.
 
 **Qué se aprendió:** TODO (Joel)
 
