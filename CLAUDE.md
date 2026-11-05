@@ -35,7 +35,7 @@ Se despliega con **AWS Amplify Hosting** y el código vive en un repo de GitHub.
 - Rendimiento: sin imágenes pesadas, fuentes del sistema o una sola fuente web.
 
 ## Función creativa: agente simulado
-Decidido por Joel: un agente conversacional sin IA real (guion escrito en el navegador, sin coste ni backend) que actúa sobre la web, llevando al visitante a las secciones y proyectos. Diseño y reglas en `/agent-ux`.
+Decidido por Joel: un agente conversacional sin IA real (guion escrito en el navegador, sin coste ni backend) que actúa sobre la web, llevando al visitante a las secciones y proyectos.
 La terminal interactiva está descartada por estar muy vista; no proponerla ni implementarla.
 Debe cumplir:
 - Pista visible y permanente para descubrirla.
@@ -68,7 +68,6 @@ Debe cumplir:
 ## Subagentes y skills del proyecto
 - Subagentes (`.claude/agents/`): `feature-engineer`, `qa-tester`, `requirements-auditor`, `devlog-writer`.
 - Skills de proceso (`.claude/skills/`): `/gitflow`, `/submission-check`, `/devlog`.
-- Skills de diseño (`.claude/skills/`): `/visual-direction`, `/agent-ux`, `/motion-craft`, `/project-showcase`.
 - El diseño y las secciones se hacen en la conversación principal, para que Joel opine sobre la marcha.
 
 ## Registro para el write-up (importante: 25 % de la nota)
