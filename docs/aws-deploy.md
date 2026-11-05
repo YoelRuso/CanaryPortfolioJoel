@@ -55,7 +55,10 @@ IAM → **Roles** → **Create role** → **Web identity** → proveedor `token.
       "Condition": {
         "StringEquals": {
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          "token.actions.githubusercontent.com:sub": "repo:YoelRuso/CanaryPortfolioJoel:environment:production"
+          "token.actions.githubusercontent.com:sub": [
+            "repo:YoelRuso@116205447/CanaryPortfolioJoel@1447465204:environment:production",
+            "repo:YoelRuso/CanaryPortfolioJoel:environment:production"
+          ]
         }
       }
     }
@@ -63,7 +66,11 @@ IAM → **Roles** → **Create role** → **Web identity** → proveedor `token.
 }
 ```
 
-La condición `sub` hace que solo el entorno `production` de este repositorio pueda asumir el rol.
+La condición `sub` hace que solo el entorno `production` de este repositorio pueda asumir el rol. Este repo usa el formato nuevo de GitHub, que incluye los IDs numéricos de la cuenta y del repo (`repo:YoelRuso@116205447/CanaryPortfolioJoel@1447465204:...`); se acepta también el formato clásico. Para ver qué formato usa un repo:
+
+```bash
+gh api repos/YoelRuso/CanaryPortfolioJoel/actions/oidc/customization/sub
+```
 
 Añade al rol esta política de permisos en línea (cambia `REGION`, `ACCOUNT_ID` y `APP_ID`). Solo permite desplegar en la rama `main` de esta app:
 
@@ -78,6 +85,7 @@ Añade al rol esta política de permisos en línea (cambia `REGION`, `ACCOUNT_ID
       "Resource": [
         "arn:aws:amplify:REGION:ACCOUNT_ID:apps/APP_ID",
         "arn:aws:amplify:REGION:ACCOUNT_ID:apps/APP_ID/branches/main",
+        "arn:aws:amplify:REGION:ACCOUNT_ID:apps/APP_ID/branches/main/deployments/*",
         "arn:aws:amplify:REGION:ACCOUNT_ID:apps/APP_ID/branches/main/jobs/*"
       ]
     }
@@ -105,6 +113,6 @@ No son secretos: ninguno permite actuar sin el token OIDC que solo emite GitHub 
 
 ## Si falla
 
-- **Not authorized to perform sts:AssumeRoleWithWebIdentity**: revisa la condición `sub` (nombre exacto del repo y `environment:production`) y el ARN del proveedor.
-- **AccessDenied en amplify:...**: revisa región, App ID y que la rama de Amplify se llame `main`.
+- **Not authorized to perform sts:AssumeRoleWithWebIdentity**: revisa la condición `sub` (formato con IDs o clásico, nombre exacto del repo y `environment:production`) y el ARN del proveedor. Fue el primer fallo real de este proyecto: la política solo tenía el formato clásico.
+- **AccessDenied en amplify:...**: revisa región, App ID y que la rama de Amplify se llame `main`. `CreateDeployment` actúa sobre `branches/main/deployments/*`, así que ese recurso tiene que estar en la política (faltaba en la primera versión).
 - **El job de despliegue aparece como saltado**: falta la variable `AMPLIFY_APP_ID`, o el push no fue a `main`.
