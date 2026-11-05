@@ -34,12 +34,18 @@ The coastline and mountains come from real elevation data: Terrain Tiles from th
 
 [SCREENSHOT: the site on mobile]
 
+### Life on the island
+
+The chart isn't still. Gulls circle over the ports, a fish leaps out of the sea now and then, and a pair of dolphins jumps beside the pilot's boat while it sails. On the south tip stands the Maspalomas lighthouse, at its real position, with a chart label and the magenta light flare nautical charts use. The moon button in the header (or asking the pilot for "night") turns the chart to moonlight, and the lighthouse lights up. The speaker button adds calm waves and a ship's horn when the boat sets sail, made in the browser with the Web Audio API. Sound and night are always off until you turn them on, and nothing moves for visitors who prefer reduced motion.
+
+[SCREENSHOT: the lighthouse at night]
+
 ### Why no framework
 
 I built everything with plain HTML, CSS and JavaScript on purpose. I didn't want a pile of dependencies I wasn't going to use, and I wanted to show that you can build something rich without a framework: the browser already has everything this site needs.
 
 - **Zero dependencies:** no npm packages and no build step. Even the scripts that turn the elevation data into map layers only use what Node.js has built in.
-- **Light:** the whole site, including the 13 map layers, weighs about 55 KB compressed.
+- **Light:** the whole site, including the 13 map layers, weighs about 65 KB compressed.
 - **The browser does the heavy lifting:** CSS 3D transforms and custom properties for the island, `<details>` for the project notes, `IntersectionObserver` for the menu, and `prefers-reduced-motion` for accessibility.
 - **Simple, fast deployment:** with nothing to compile, the pipeline just tests, zips and uploads the files to Amplify.
 - **Nothing to keep patched:** no dependency means no vulnerable dependency to update, and the site will still run as it is in years.
@@ -65,6 +71,8 @@ A framework makes sense for a big app with a lot of state. For a portfolio, it w
 - **The boat was hidden by land, clouds and panels:** it's now drawn in 2D above everything, at the projected position of its 3D course.
 - **OIDC "Not authorized":** my repository uses GitHub's newer subject claim, which includes numeric IDs (`repo:Owner@id/Repo@id:...`), and my trust policy only had the classic format. After that, `CreateDeployment` needed the `branches/main/deployments/*` resource. Both are documented in the repo.
 - **Sea depth data:** the public tiles are too coarse near the coast, so the sea bands are stylised from the real coastline, and the site says so.
+- **The boat sailed over land:** one stretch of the course crossed La Isleta. I wrote a small test that samples the route and checks every point against the real coastline: 13 points were on land; the new route has none and stays about 2.6 km offshore.
+- **Accessibility pass:** a browser test found that the keyboard could land on island labels hidden behind panels, a focus ring that vanished on dark backgrounds, and the pilot docking on text its own panel covered. All three are fixed. Lighthouse gives 100 for accessibility, best practices and SEO.
 
 ### What I learned
 
