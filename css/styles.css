@@ -245,26 +245,39 @@ main, .site-footer { transition: opacity 0.45s; }
   transform: translateZ(calc(var(--z) * var(--spread) * var(--u) * var(--relief)));
 }
 .lh-stand {
-  position: absolute; left: calc(-7 * var(--u)); top: calc(-32 * var(--u));
-  width: calc(14 * var(--u)); height: calc(32 * var(--u));
+  position: absolute; left: calc(-10 * var(--u)); top: calc(-43 * var(--u));
+  width: calc(20 * var(--u)); height: calc(43 * var(--u));
   transform-origin: 50% 100%;
   transform: rotateX(-62deg); /* stand up towards the camera */
 }
-.lh-tower { display: block; width: 100%; height: 100%; overflow: visible; fill: var(--paper); stroke: var(--ink); stroke-width: 1; stroke-linejoin: round; }
-.lh-tower .lh-lantern { fill: var(--ink); }
+/* The drawing is 20 x 43 units; the lantern's centre sits 16.7% from the top */
+.lh-tower { display: block; width: 100%; height: 100%; overflow: visible; stroke: var(--ink); stroke-width: 0.45; stroke-linejoin: round; }
+.lh-tower .lh-house { fill: #efe5c8; }
+.lh-tower .lh-door { fill: #6b5a3a; stroke: none; }
+.lh-tower .lh-body { fill: url(#lh-stone); }
+.lh-tower .lh-bands { fill: none; stroke: #a8915e; stroke-width: 0.35; }
+.lh-tower .lh-gallery { fill: #3b4a55; }
+.lh-tower .lh-rail { fill: none; stroke: #3b4a55; stroke-width: 0.35; }
+.lh-tower .lh-glass { fill: #fdf4cf; }
+.lh-tower .lh-mullion { fill: none; stroke: #3b4a55; stroke-width: 0.3; }
+.lh-tower .lh-dome { fill: #2f3d48; }
+.lh-tower .lh-rod { fill: none; stroke: #2f3d48; stroke-width: 0.4; stroke-linecap: round; }
+.is-night .lh-tower .lh-glass { fill: #fff3b0; }
+.lh-point { position: absolute; left: 50%; top: 16.7%; width: 0; height: 0; }
 .lh-light {
-  position: absolute; left: 50%; top: calc(4.5 * var(--u));
-  width: calc(26 * var(--u)); height: calc(26 * var(--u)); margin: calc(-13 * var(--u)) 0 0 calc(-13 * var(--u));
+  position: absolute; left: 50%; top: 16.7%;
+  width: calc(22 * var(--u)); height: calc(22 * var(--u)); margin: calc(-11 * var(--u)) 0 0 calc(-11 * var(--u));
   border-radius: 50%;
   background: radial-gradient(circle, rgb(255 244 190 / 0.95) 0 18%, rgb(255 226 120 / 0.35) 40%, transparent 70%);
   opacity: 0.15;
   animation: lh-flash 5s ease-out infinite;
 }
+/* The light symbol nautical charts use: a magenta flare leaving the lantern */
 .lh-flare {
-  position: absolute; left: 60%; top: calc(1 * var(--u));
-  width: calc(18 * var(--u)); height: calc(9 * var(--u));
-  fill: var(--magenta); opacity: 0.85;
-  transform: rotate(-35deg); transform-origin: 0 50%;
+  position: absolute; left: 62%; top: 16.7%;
+  width: calc(11 * var(--u)); height: calc(5.5 * var(--u)); margin-top: calc(-2.75 * var(--u));
+  fill: var(--magenta); opacity: 0.8;
+  transform: rotate(-25deg); transform-origin: 0 50%;
 }
 @keyframes lh-flash {
   0%, 100% { opacity: 0.15; transform: scale(0.8); }
@@ -272,8 +285,8 @@ main, .site-footer { transition: opacity 0.45s; }
   14% { opacity: 0.15; transform: scale(0.8); }
 }
 
-/* Night mode (20:00–07:00 local time, or ask the pilot): the sea turns to dusk under a
-   multiply tint, and the lighthouse shines further. Panels and header keep their colours. */
+/* Night mode (moon button in the header, or ask the pilot): the sea turns to moonlight under
+   a multiply tint, and the lighthouse shines. Panels and header keep their colours. */
 .scene-night {
   position: absolute; inset: 0; pointer-events: none;
   background: #8ea2c4; mix-blend-mode: multiply;

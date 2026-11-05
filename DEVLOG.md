@@ -199,7 +199,8 @@ Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir m
 
 **Retos y cómo se resolvieron:**
 - Un tinte azul por multiplicación volvía verde oliva la tierra amarilla. Se añadió antes una capa de mezcla `saturation` que quita casi todo el color, y así queda gris azulado, como a la luz de la luna.
-- El tinte nocturno también apagaba la luz del faro. Su resplandor se dibuja en 2D por encima del tinte, anclado a la punta de la torre, igual que el barco.
+- El primer faro era un trapecio blanco. Se redibujó según el real: casa del farero, torre de arenisca que se estrecha (con degradado e hiladas), galería con barandilla, linterna de cristal y cúpula con pararrayos. Las proporciones se revisaron renderizando el SVG a tamaño grande.
+- El tinte nocturno también apagaba la luz del faro. Su resplandor se dibuja en 2D por encima del tinte, igual que el barco, anclado a un punto dentro de la propia linterna. Con un ancla calculada aparte quedaba a media torre.
 - El texto de la portada se pasa a tinta oscura de noche para mantener el contraste.
 - Con el botón nuevo, la cabecera del móvil no cabía. Se redujeron un poco el texto y los márgenes del menú.
 

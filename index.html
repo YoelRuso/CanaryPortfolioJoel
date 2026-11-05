@@ -72,7 +72,26 @@
         <div class="life" data-life>
           <div class="lighthouse" style="--x:502;--y:832;--z:7">
             <span class="lh-stand">
-              <svg class="lh-tower" viewBox="-7 -30 14 32"><path d="M-3.4 0L-2.2-20H2.2L3.4 0Z"/><path class="lh-lantern" d="M-2.6-20V-25H2.6V-20ZM-3.4-25L0-29.5L3.4-25Z"/></svg>
+              <!-- Faro de Maspalomas: keeper's house at the base, a tapering sandstone tower,
+                   the gallery, the glass lantern and its dark dome -->
+              <svg class="lh-tower" viewBox="-10 -41 20 43">
+                <defs>
+                  <linearGradient id="lh-stone" x1="0" x2="1">
+                    <stop offset="0" stop-color="#f6ecd2"/><stop offset="0.55" stop-color="#e6d3a6"/><stop offset="1" stop-color="#c9b17c"/>
+                  </linearGradient>
+                </defs>
+                <path class="lh-house" d="M-9.5 0V-5.5H9.5V0Z"/>
+                <path class="lh-door" d="M-1.2 0V-3.2H1.2V0Z"/>
+                <path class="lh-body" d="M-4 -5.5L-2.7 -30H2.7L4 -5.5Z"/>
+                <path class="lh-bands" d="M-3.6 -12H3.6M-3.25 -18.5H3.25M-2.9 -24.5H2.9"/>
+                <path class="lh-gallery" d="M-4.2 -30H4.2V-31.6H-4.2Z"/>
+                <path class="lh-rail" d="M-3.8 -31.6V-33M-1.3 -31.6V-33M1.3 -31.6V-33M3.8 -31.6V-33M-3.8 -33H3.8"/>
+                <path class="lh-glass" d="M-2.3 -31.6V-36H2.3V-31.6Z"/>
+                <path class="lh-mullion" d="M0 -31.6V-36M-2.3 -33.8H2.3"/>
+                <path class="lh-dome" d="M-2.9 -36Q0 -40 2.9 -36Z"/>
+                <path class="lh-rod" d="M0 -38.6V-41"/>
+              </svg>
+              <i class="lh-point"></i>
               <span class="lh-light"></span>
               <svg class="lh-flare" viewBox="0 -4 16 8"><path d="M0 0C3-3 13-4 16 0C13 4 3 3 0 0Z"/></svg>
             </span>

@@ -159,8 +159,8 @@
   }
 
   // The lighthouse's night glow is drawn in 2D above the night tint (which would dim it),
-  // at the screen position of an anchor at the top of the Maspalomas tower.
-  var glowAnchor = anchor(502, 832, 23);
+  // at the screen position of a point placed in the lantern of the Maspalomas tower itself.
+  var glowAnchor = document.querySelector('.lh-point') || anchor(502, 832, 23);
   var glow = document.createElement('div');
   glow.className = 'lh-glow';
   glow.setAttribute('aria-hidden', 'true');
