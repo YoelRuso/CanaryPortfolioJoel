@@ -119,6 +119,23 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 **En qué ayudó el agente de código:** Midió (peso, memoria gráfica, coste por fotograma), propuso mejoras priorizadas y las aplicó.
 
+## 2026-11-05 — CI/CD con GitHub Actions y despliegue en Amplify por OIDC
+
+**Qué se hizo:** Workflow `.github/workflows/ci-cd.yml`. En cada push y pull request ejecuta los tests: sintaxis de JavaScript con `node --check` y HTML válido con `html-validate`. En `main`, si los tests pasan, empaqueta solo la web y la despliega en Amplify con la CLI de AWS (`create-deployment`, subida del zip, `start-deployment` y espera a `get-job`). Guía de configuración en `docs/aws-deploy.md`.
+
+**Servicios de AWS y configuración:** Amplify Hosting como app sin Git conectado (despliegues manuales que lanza Actions). IAM con un proveedor OIDC de GitHub y un rol que solo puede asumir el entorno `production` de este repo, con permiso únicamente para desplegar la rama `main` de esta app. No hay claves de AWS en GitHub.
+
+**Retos y cómo se resolvieron:**
+- `html-validate` detectó `<p>` dentro de `<summary>`, que no está permitido. Se cambió por `<span>`.
+- Los estilos en línea que marcaba son variables de posición de las capas (datos, no estilo), así que esa regla se desactivó en `.htmlvalidate.json`.
+- Con el despliegue desde Actions, `amplify.yml` dejó de hacer falta y se eliminó.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Pidió usar GitHub Actions para los tests y el despliegue, eligió OIDC y el nombre del repo. Configura AWS y las variables del repo siguiendo la guía.
+
+**En qué ayudó el agente de código:** Escribió el workflow, la guía con las políticas IAM de mínimo privilegio y corrigió el HTML.
+
 ## Capturas pendientes
 
 - [ ] Web en escritorio
@@ -126,4 +143,6 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 - [ ] Función creativa en uso
 - [ ] Panel de Amplify
 - [ ] Build y deploy en Amplify
+- [ ] Workflow de GitHub Actions en verde (tests y despliegue)
+- [ ] Rol IAM con la política de confianza OIDC
 - [ ] Repositorio de GitHub
