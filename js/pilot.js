@@ -124,6 +124,18 @@
       say: ['Those are the trade-wind clouds that pile up on the north side. People here call them panza de burro, donkey’s belly.'],
       chips: CHIPS.end
     },
+    night: {
+      keys: ['night', 'dark', 'dark mode', 'night mode', 'evening', 'lighthouse', 'faro', 'maspalomas'],
+      say: ['Night falls over the island. Watch the Maspalomas lighthouse on the south tip. Say “day” to bring the sun back.'],
+      night: true,
+      chips: [['Back to day', 'day'], ['Projects', 'projects'], ['Show me around', 'tour']]
+    },
+    day: {
+      keys: ['day', 'daytime', 'light mode', 'morning', 'sunrise'],
+      say: ['Morning again. The lighthouse can rest.'],
+      night: false,
+      chips: CHIPS.home
+    },
     sound: {
       keys: ['sound', 'audio', 'music', 'waves', 'horn', 'mute', 'noise'],
       say: ['The speaker at the top right turns the sea on: calm waves, and my horn when we set sail. It stays off until you ask.'],
@@ -244,6 +256,7 @@
     }
 
     setChips([]);
+    if (typeof entry.night === 'boolean' && window.islandLife) window.islandLife.setNight(entry.night);
     return addLine('pilot', pick(entry.say))
       .then(function () { return entry.act ? perform(entry.act) : null; })
       .then(function () { setChips(entry.chips); });
