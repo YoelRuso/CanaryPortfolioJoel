@@ -59,22 +59,44 @@
   var activeBuoy = null;
   function isNarrow() { return window.innerWidth <= 900; }
 
+  // On wide screens each section's panel sits to one side. This finds the open water
+  // next to it (minus the pilot's panel when it is open), so the camera can centre the
+  // island there and zoom out a little if the gap is narrow.
+  function freeArea(section) {
+    var w = window.innerWidth;
+    var panel = document.querySelector('.depth-' + section + ' .panel');
+    if (!panel) return { offset: 0, fit: 1 };
+    var pilotWidth = document.documentElement.classList.contains('pilot-open') ? 392 : 0;
+    var left = panel.offsetLeft, right = left + panel.offsetWidth;
+    var from, to;
+    if (left > w / 2 - 100) { from = 0; to = left; }            // panel on the right (Skills)
+    else { from = right; to = w - pilotWidth; }                  // panel on the left (About, Projects)
+    var gap = to - from;
+    // Too narrow beside the panel (a laptop with the pilot open): use the band across
+    // the top of the screen instead, centred in the part the pilot doesn't cover.
+    if (gap < 340) return { offset: (w - pilotWidth) / 2 - w / 2, fit: 1, top: true };
+    return { offset: (from + to) / 2 - w / 2, fit: Math.min(1, Math.max(0.7, gap / 640)), top: false };
+  }
+
   function poseFor(name) {
     var w = window.innerWidth, h = window.innerHeight, narrow = isNarrow();
     var sectionY = narrow ? -0.13 * h : 0.04 * h;
+    var area = narrow ? { offset: 0, fit: 1, top: false } : freeArea(name === 'footer' ? 'projects' : name);
+    if (area.top) sectionY = -0.2 * h;
     switch (name) {
       case 'about':
-        return { fx: 780, fy: 270, zoom: narrow ? 1.7 : 2.0, rx: 60, rz: -32, sx: narrow ? 0 : 0.26 * w, sy: sectionY, deep: 0.03, spread: 1.1, pins: ['about'] };
+        return { fx: 780, fy: 270, zoom: narrow ? 1.7 : 2.0 * area.fit, rx: 60, rz: -32, sx: area.offset, sy: sectionY, deep: 0.03, spread: 1.1, pins: ['about'] };
       case 'skills':
-        return { fx: 360, fy: 330, zoom: narrow ? 1.6 : 1.85, rx: 62, rz: 24, sx: narrow ? 0 : -0.25 * w, sy: sectionY, deep: 0.16, spread: 1.15, pins: ['skills', 'summit'] };
+        return { fx: 360, fy: 330, zoom: narrow ? 1.6 : 1.85 * area.fit, rx: 62, rz: 24, sx: area.offset, sy: sectionY, deep: 0.16, spread: 1.15, pins: ['skills', 'summit'] };
       case 'projects':
       case 'footer':
-        // The island sits in the top half of the screen, above the projects panel, so every buoy shows.
+        // On phones the island sits above the projects panel; on wide screens it is
+        // centred in the open water beside the panel, so every buoy shows.
         var buoy = activeBuoy ? POINTS[activeBuoy] : null;
         return {
-          fx: buoy ? buoy.x : 575, fy: buoy ? buoy.y : 830,
-          zoom: buoy ? (narrow ? 1.8 : 2.1) : (narrow ? 1.3 : 1.45),
-          rx: 62, rz: buoy ? -6 : 0, sx: narrow ? 0 : 0.06 * w, sy: narrow ? -0.13 * h : -0.18 * h,
+          fx: buoy ? buoy.x : 575, fy: buoy ? buoy.y : 840,
+          zoom: buoy ? (narrow ? 1.8 : 2.1 * area.fit) : (narrow ? 1.3 : 1.45 * area.fit),
+          rx: 62, rz: buoy ? -6 : 0, sx: area.offset, sy: narrow ? -0.13 * h : (area.top ? -0.2 * h : 0.02 * h),
           deep: name === 'footer' ? 1 : 0.85, spread: 1.2, pins: BUOYS.concat('lighthouse')
         };
       default:
