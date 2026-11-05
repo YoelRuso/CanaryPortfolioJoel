@@ -8,9 +8,9 @@ My portfolio for the **AWS Student Builder Challenge**, drawn as a 3D sea chart 
 
 ## What it is
 
-- **A relief model of Gran Canaria** behind the whole page, built from real elevation data and stacked in CSS 3D layers, one every 300 m. Scrolling moves a camera from port to port: Puerto de la Luz for **About**, Agaete for **Skills** and Mogán for **Projects**, where each project is a buoy off the coast.
+- **A relief model of Gran Canaria** behind the whole page, built from real elevation data and stacked in CSS 3D layers, one every 300 m. Scrolling moves a camera from port to port: Puerto de la Luz for **About**, Agaete for **Skills** and Mogán for **Projects**, where each project is a buoy off the coast. On wide screens the camera centres the island in the open water beside each section's panel.
 - **The creative feature, a pilot on board:** a scripted guide (no AI, no server) behind the "Ask the pilot" button, which flies the code flag H, "I have a pilot on board". Ask it for a project or a topic and its boat sails the course on the island while the camera follows, then the page docks at that section. You can close it with Esc, and the site works fully without it, with keyboard, mouse or touch. It respects `prefers-reduced-motion`.
-- **Life on the island:** gulls circling over the ports, fish leaping now and then, dolphins beside the pilot's boat, and the Maspalomas lighthouse. A moon button in the header (or asking the pilot for "night") turns the chart to night and lights the lighthouse.
+- **Life on the island:** gulls circling over the ports, fish leaping now and then, dolphins beside the pilot's boat, and the Maspalomas lighthouse at its real position, with a chart label and the magenta light flare nautical charts use. A moon button in the header (or asking the pilot for "night") turns the chart to moonlight and lights the lighthouse.
 - **Optional sound**, off by default (speaker button in the header): calm waves and the ship's horn when the pilot sets sail, made in the browser with the Web Audio API, with no audio files.
 
 ## Architecture
@@ -39,9 +39,22 @@ Setup steps and the exact IAM policies: [docs/aws-deploy.md](docs/aws-deploy.md)
 Plain HTML, CSS and JavaScript on purpose: no dependencies I don't use, and proof that the browser already has what a site like this needs.
 
 - No npm packages and no build step. Even the map scripts only use what Node.js has built in.
-- About 55 KB compressed, including the 13 map layers.
+- About 65 KB compressed, including the 13 map layers.
 - CSS 3D transforms and custom properties, `<details>`, `IntersectionObserver` and `prefers-reduced-motion` do the heavy lifting.
 - Nothing to compile, nothing to keep patched, and "view source" shows the real code.
+
+## Accessibility and performance
+
+- **Lighthouse** (mobile, incognito): 100 for accessibility, best practices and SEO; 84 for performance before the web font stopped blocking the first paint.
+- The whole site works without the pilot and without JavaScript: semantic HTML, a skip link, a menu that marks the current section, and `<details>` for the project notes.
+- Keyboard: visible focus on every control; island labels that are off screen or behind a panel leave the tab order until they are visible again.
+- The pilot never docks on something its own panel covers, on desktop or phone.
+- `prefers-reduced-motion`: the island stays still and nothing leaps; sound and night mode are always opt-in.
+
+## Tests and releases
+
+- CI runs on every push and pull request: `node --check` on every script and `html-validate` on the page (`.htmlvalidate.json`).
+- Gitflow (`main`, `develop`, `feature/*`, `release/*`, `hotfix/*`) with tagged releases from `v1.0.0` to the current one. Every push to `main` is a production deploy.
 
 ## Run it locally
 
