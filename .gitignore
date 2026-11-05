@@ -18,3 +18,7 @@ desktop.ini
 
 # Python (local static server)
 __pycache__/
+
+# Local deployment package (built by CI or by hand)
+dist/
+site.zip
