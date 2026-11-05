@@ -158,6 +158,21 @@
     return { a: boatAnchor.getBoundingClientRect(), b: aheadAnchor.getBoundingClientRect() };
   }
 
+  // The lighthouse's night glow is drawn in 2D above the night tint (which would dim it),
+  // at the screen position of an anchor at the top of the Maspalomas tower.
+  var glowAnchor = anchor(502, 832, 23);
+  var glow = document.createElement('div');
+  glow.className = 'lh-glow';
+  glow.setAttribute('aria-hidden', 'true');
+  pinsLayer.insertBefore(glow, pinsLayer.firstChild);
+  function measureGlow() {
+    return document.documentElement.classList.contains('is-night') ? glowAnchor.getBoundingClientRect() : null;
+  }
+  function placeGlow(rect) {
+    if (!rect) return;
+    glow.style.transform = 'translate(' + rect.left.toFixed(1) + 'px,' + rect.top.toFixed(1) + 'px)';
+  }
+
   function drawBoat(m) {
     if (!m) return;
     var a = m.a, b = m.b;
@@ -344,9 +359,10 @@
       });
     }
     apply(current);
-    var pinRects = measurePins(target.pinWeights), boatRects = measureBoat();
+    var pinRects = measurePins(target.pinWeights), boatRects = measureBoat(), glowRect = measureGlow();
     placePins(pinRects);
     drawBoat(boatRects);
+    placeGlow(glowRect);
     Object.keys(pins).forEach(function (name) {
       if (Math.abs((target.pinWeights[name] || 0) - pins[name].o) > 0.02) moving = true;
     });
@@ -382,7 +398,16 @@
     focusProject(open ? open.dataset.buoy : null);
   });
 
-  window.islandScene = { sailTo: sailTo, lookAt: lookAt, focusProject: focusProject, showBoat: showBoat, hasStop: function (n) { return stopAt[n] != null; } };
+  // Where the boat is on the map and which way it is heading (used by life.js for the dolphins).
+  function boatPosition() {
+    var p = course.getPointAtLength(boatAt);
+    var q = course.getPointAtLength(Math.min(pathLength, boatAt + 4));
+    var forward = !sail || sail.to >= sail.from;
+    var angle = Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI + (forward ? 0 : 180);
+    return { x: p.x, y: p.y, angle: angle };
+  }
+
+  window.islandScene = { sailTo: sailTo, lookAt: lookAt, focusProject: focusProject, showBoat: showBoat, boat: boatPosition, redraw: kick, hasStop: function (n) { return stopAt[n] != null; } };
 
   // The model fades in and rises only once every layer is decoded, so no layer pops in late.
   // A time limit keeps a slow network from hiding the island for long.
