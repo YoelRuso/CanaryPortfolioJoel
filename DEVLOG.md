@@ -167,3 +167,46 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 **En qué ayudó el agente de código:** Comprobó el fallo con datos, trazó la ruta nueva y verificó que va por mar.
 
+## 2026-11-05 — Gaviotas y peces
+
+**Qué se hizo:** Detalles de vida en la isla, solo con CSS y SVG:
+- Cuatro gaviotas, con el mismo trazo fino de la carta, que planean en círculos sobre los puertos y aletean de vez en cuando.
+- Cada 6–12 s, un pez salta en algún punto del mar abierto (sobre la ruta del barco, que siempre es mar) y deja un anillo de agua al salir y otro al caer.
+
+Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir movimiento" nada se mueve y no salta ningún pez.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:**
+- Tumbadas sobre el plano del mapa, la inclinación de la cámara aplanaba las gaviotas hasta parecer puntos. Ahora contrarrestan su giro y se ponen "de pie" hacia la cámara, así que siempre se leen como una gaviota.
+- Volaban demasiado altas y quedaban lejos de los puertos. Se bajaron a la mitad.
+- Los anillos blancos no se veían sobre el mar claro, y se pasaron a azul agua.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Propuso añadir pájaros y peces sin ensuciar la pantalla.
+
+**En qué ayudó el agente de código:** Diseñó las animaciones, las integró en la escena 3D y ajustó tamaños tras revisarlas en el navegador.
+
+## 2026-11-05 — Delfines, faro de Maspalomas y modo noche
+
+**Qué se hizo:**
+- **Delfines:** cuando el barco zarpa, una pareja salta junto a él en su misma dirección, dos veces en las travesías largas. La escena expone la posición y el rumbo del barco (`islandScene.boat()`).
+- **Faro de Maspalomas:** en su posición real (27,7353 N, 15,5986 O), comprobada contra la costa del mapa. Es una torre pequeña con el destello magenta de las cartas náuticas y una luz que parpadea cada 5 s.
+- **Modo noche:** la escena pasa a luz de luna y el faro brilla. Al principio se activaba solo entre las 20:00 y las 07:00 de la hora del visitante. Joel prefirió que la web se vea siempre de día y que la noche se ponga a mano, con el botón de luna de la cabecera o pidiéndoselo al piloto ("night" / "day"). La elección se recuerda.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:**
+- Un tinte azul por multiplicación volvía verde oliva la tierra amarilla. Se añadió antes una capa de mezcla `saturation` que quita casi todo el color, y así queda gris azulado, como a la luz de la luna.
+- El primer faro era un trapecio blanco. Se redibujó según el real: casa del farero, torre de arenisca que se estrecha (con degradado e hiladas), galería con barandilla, linterna de cristal y cúpula con pararrayos. Las proporciones se revisaron renderizando el SVG a tamaño grande.
+- El tinte nocturno también apagaba la luz del faro. Su resplandor se dibuja en 2D por encima del tinte, igual que el barco, anclado a un punto dentro de la propia linterna. Con un ancla calculada aparte quedaba a media torre.
+- El texto de la portada se pasa a tinta oscura de noche para mantener el contraste.
+- Con el botón nuevo, la cabecera del móvil no cabía. Se redujeron un poco el texto y los márgenes del menú.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Pidió seguir con las ideas extra.
+
+**En qué ayudó el agente de código:** Las implementó y las comprobó en el navegador de día y de noche.
+
