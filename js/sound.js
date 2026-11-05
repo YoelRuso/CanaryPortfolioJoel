@@ -216,18 +216,35 @@
     return bellReverb;
   }
 
-  function bell(at) {
+  // All strokes of one arrival go through one bus, so a new departure can fade them out.
+  var bellBus = null;
+  function newBellBus() {
+    bellBus = ctx.createGain();
+    bellBus.gain.value = 1;
+    bellBus.connect(master);
+    bellBus.connect(bellSpace());
+    return bellBus;
+  }
+  function hushBells() {
+    if (!bellBus) return;
+    var now = ctx.currentTime;
+    bellBus.gain.cancelScheduledValues(now);
+    bellBus.gain.setValueAtTime(bellBus.gain.value, now);
+    bellBus.gain.linearRampToValueAtTime(0, now + 0.3);
+    bellBus = null;
+  }
+
+  function bell(at, bus) {
     var base = 840, out = ctx.createGain();
     out.gain.value = 0.4;
-    out.connect(master);
-    out.connect(bellSpace());
+    out.connect(bus || newBellBus());
 
     // Bell partials are not whole multiples. Each one is a close pair, which
     // gives the slow shimmer a real bell has. Bronze keeps ringing: the low
     // partials last several seconds, the high ones fade first.
     var partials = [
-      [0.5, 0.16, 8.5], [1, 0.3, 7], [1.19, 0.15, 5.5], [1.5, 0.1, 4.5],
-      [2, 0.11, 3.6], [2.52, 0.06, 2.6], [2.68, 0.05, 2.3], [3.01, 0.04, 1.8], [4.07, 0.025, 1.1]
+      [0.5, 0.16, 5.5], [1, 0.3, 4.5], [1.19, 0.15, 3.6], [1.5, 0.1, 3],
+      [2, 0.11, 2.4], [2.52, 0.06, 1.8], [2.68, 0.05, 1.6], [3.01, 0.04, 1.3], [4.07, 0.025, 0.8]
     ];
     partials.forEach(function (p) {
       [-0.6, 0.6].forEach(function (beat) {
@@ -283,16 +300,22 @@
 
   document.addEventListener('island:depart', function (event) {
     if (!on || !ctx) return;
+    hushBells();
     horn();
     wash((event.detail && event.detail.seconds) || 2);
   });
   document.addEventListener('island:arrive', function () {
     if (!on || !ctx) return;
-    var now = ctx.currentTime;
-    bell(now + 0.05);  // three strokes of the bell, unhurried
-    bell(now + 1.35);
-    bell(now + 2.65);
+    ringBells();
   });
+
+  // Three strokes, in step with the boat: quick enough to finish before the next voyage.
+  function ringBells() {
+    var now = ctx.currentTime, bus = newBellBus();
+    bell(now + 0.05, bus);
+    bell(now + 0.6, bus);
+    bell(now + 1.15, bus);
+  }
 
   // Quiet while the page is in the background.
   document.addEventListener('visibilitychange', function () {
@@ -320,6 +343,6 @@
     isOn: function () { return on; },
     state: function () { return ctx ? ctx.state : 'not started'; }, // 'running' when audio is playing
     // For trying the sounds from the browser console.
-    preview: { horn: function () { if (ctx) horn(); }, bell: function () { if (ctx) { var t = ctx.currentTime; bell(t + 0.05); bell(t + 1.35); bell(t + 2.65); } }, wave: function () { if (ctx) wave(); } }
+    preview: { horn: function () { if (ctx) horn(); }, bell: function () { if (ctx) ringBells(); }, wave: function () { if (ctx) wave(); } }
   };
 })();
