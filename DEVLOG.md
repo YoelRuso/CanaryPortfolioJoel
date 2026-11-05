@@ -45,7 +45,7 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 - La sombra de las nubes flotaba sobre el mar. Se recorta con la forma de la isla mediante una máscara.
 - Con `prefers-reduced-motion` la maqueta queda quieta en su pose de reposo y no hay parallax.
 
-**Qué se aprendió:** TODO (Joel)
+**Qué se aprendió:** Que existe el registro AWS Open Data: datos de elevación de todo el planeta (Terrain Tiles), libres y listos para usar en un proyecto. (Joel)
 
 **Qué hizo Joel:** Pidió más movimiento, capas con profundidad y una isla más fiel.
 
@@ -95,7 +95,7 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 **Retos y cómo se resolvieron:** Las capas, más grandes desde el cambio de nitidez, se volvían a dibujar en cada fotograma por esas animaciones. Al quedarse corta la memoria gráfica, el navegador las redibujaba por trozos y se veía parpadeo. Ahora cada capa se rasteriza una vez y la cámara solo la mueve.
 
-**Qué se aprendió:** TODO (Joel)
+**Qué se aprendió:** Que en 3D la optimización de la web y de los recursos es importante desde el principio: cada capa, animación e imagen tiene un coste. (Joel)
 
 **Qué hizo Joel:** Detectó el parpadeo al mover el ratón y en reposo.
 
@@ -113,7 +113,7 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 **Retos y cómo se resolvieron:** El navegador rasteriza la caja completa de cada capa aunque sea transparente. Las capas altas ocupaban menos del 2 % de su cuadrado, así que recortarlas era la mayor ganancia.
 
-**Qué se aprendió:** TODO (Joel)
+**Qué se aprendió:** Que en 3D la optimización de la web y de los recursos es importante desde el principio: cada capa, animación e imagen tiene un coste. (Joel)
 
 **Qué hizo Joel:** Pidió el análisis y aprobó el paquete de mejoras.
 
@@ -138,14 +138,3 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 **Qué hizo Joel:** Pidió usar GitHub Actions para los tests y el despliegue, eligió OIDC y el nombre del repo. Configura AWS y las variables del repo siguiendo la guía.
 
 **En qué ayudó el agente de código:** Escribió el workflow, la guía con las políticas IAM de mínimo privilegio y corrigió el HTML.
-
-## Capturas pendientes
-
-- [ ] Web en escritorio
-- [ ] Web en móvil
-- [ ] Función creativa en uso
-- [ ] Panel de Amplify
-- [ ] Build y deploy en Amplify
-- [ ] Workflow de GitHub Actions en verde (tests y despliegue)
-- [ ] Rol IAM con la política de confianza OIDC
-- [ ] Repositorio de GitHub
