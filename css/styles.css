@@ -152,6 +152,67 @@ main, .site-footer { transition: opacity 0.45s; }
 
 .anchor { position: absolute; left: calc(var(--x) * 0.1%); top: calc(var(--y) * 0.1%); width: 0; height: 0; transform: translateZ(calc(var(--z) * var(--spread) * var(--u) * var(--relief))); }
 
+/* Life on the island. Sizes are in map units (--u), so they scale with the camera. */
+.life { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+
+/* Gulls: drawn in the chart's thin ink line, circling slowly over the ports at different heights */
+.gull-orbit {
+  position: absolute; left: calc(var(--x) * 0.1%); top: calc(var(--y) * 0.1%); width: 0; height: 0;
+  transform: translateZ(calc(var(--z) * var(--spread) * var(--u) * var(--relief)));
+}
+.gull-orbit, .gull-spin, .gull { transform-style: preserve-3d; }
+.gull-spin { position: absolute; left: 0; top: 0; animation: gull-circle var(--t) linear infinite; animation-delay: var(--d); }
+.gull {
+  position: absolute; left: calc(var(--r) * var(--u)); top: 0;
+  width: calc(40 * var(--u)); height: calc(24 * var(--u));
+  margin: calc(-12 * var(--u)) 0 0 calc(-20 * var(--u));
+  /* Undo the circling and stand up towards the camera, so the gull always reads as a gull */
+  animation: gull-face var(--t) linear infinite; animation-delay: var(--d);
+}
+.gull svg {
+  display: block; width: 100%; height: 100%; overflow: visible;
+  fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round;
+  transform-origin: 50% 60%;
+  animation: gull-flap 3.4s ease-in-out infinite; animation-delay: var(--d);
+}
+@keyframes gull-circle { to { rotate: -360deg; } }
+@keyframes gull-face { from { transform: rotate(0deg) rotateX(-58deg); } to { transform: rotate(360deg) rotateX(-58deg); } }
+/* Mostly gliding, with an occasional pair of wingbeats */
+@keyframes gull-flap {
+  0%, 62%, 100% { transform: scaleY(1); }
+  68%, 80% { transform: scaleY(0.4); }
+  74% { transform: scaleY(1); }
+}
+
+/* Leaping fish (added by life.js): a short arc out of the water, with a ring where it leaves and lands */
+.leap { position: absolute; left: calc(var(--x) * 0.1%); top: calc(var(--y) * 0.1%); width: 0; height: 0; transform-style: preserve-3d; rotate: var(--a); }
+.leap-fish {
+  position: absolute; left: 0; top: 0;
+  width: calc(32 * var(--u)); height: calc(13 * var(--u)); margin: calc(-6.5 * var(--u)) 0 0 calc(-16 * var(--u));
+  opacity: 0;
+  animation: fish-leap 1.2s cubic-bezier(.35, .55, .45, 1) forwards;
+}
+.leap-fish svg { display: block; width: 100%; height: 100%; fill: #2c6a86; stroke: #fff; stroke-width: 0.5; }
+.leap-ring {
+  position: absolute; left: 0; top: 0;
+  width: calc(16 * var(--u)); height: calc(16 * var(--u)); margin: calc(-8 * var(--u)) 0 0 calc(-8 * var(--u));
+  border: 1.5px solid rgb(44 106 134 / 0.7); border-radius: 50%; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.5);
+  opacity: 0;
+  animation: fish-ring 1.3s ease-out both;
+}
+.leap-ring + .leap-ring { left: calc(44 * var(--u)); animation-delay: 0.95s; }
+@keyframes fish-leap {
+  0% { transform: translateX(0) translateZ(0) rotateY(-35deg); opacity: 0; }
+  12% { opacity: 1; }
+  50% { transform: translateX(calc(22 * var(--u))) translateZ(calc(34 * var(--u))) rotateY(0deg); }
+  88% { opacity: 1; }
+  100% { transform: translateX(calc(44 * var(--u))) translateZ(0) rotateY(35deg); opacity: 0; }
+}
+@keyframes fish-ring {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
 /* Deeper sections tint the sea darker over the model */
 .scene-stage { transition: opacity 0.6s; }
 .scene.is-loading .scene-stage { opacity: 0; }

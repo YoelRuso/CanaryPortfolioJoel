@@ -167,3 +167,24 @@ Registro del proyecto para el write-up del AWS Student Builder Challenge.
 
 **En qué ayudó el agente de código:** Comprobó el fallo con datos, trazó la ruta nueva y verificó que va por mar.
 
+## 2026-11-05 — Gaviotas y peces
+
+**Qué se hizo:** Detalles de vida en la isla, solo con CSS y SVG:
+- Cuatro gaviotas, con el mismo trazo fino de la carta, que planean en círculos sobre los puertos y aletean de vez en cuando.
+- Cada 6–12 s, un pez salta en algún punto del mar abierto (sobre la ruta del barco, que siempre es mar) y deja un anillo de agua al salir y otro al caer.
+
+Todo va dentro de la escena 3D, así que se mueve con la cámara. Con "reducir movimiento" nada se mueve y no salta ningún pez.
+
+**Servicios de AWS y configuración:** Sin cambios.
+
+**Retos y cómo se resolvieron:**
+- Tumbadas sobre el plano del mapa, la inclinación de la cámara aplanaba las gaviotas hasta parecer puntos. Ahora contrarrestan su giro y se ponen "de pie" hacia la cámara, así que siempre se leen como una gaviota.
+- Volaban demasiado altas y quedaban lejos de los puertos. Se bajaron a la mitad.
+- Los anillos blancos no se veían sobre el mar claro, y se pasaron a azul agua.
+
+**Qué se aprendió:** TODO (Joel)
+
+**Qué hizo Joel:** Propuso añadir pájaros y peces sin ensuciar la pantalla.
+
+**En qué ayudó el agente de código:** Diseñó las animaciones, las integró en la escena 3D y ajustó tamaños tras revisarlas en el navegador.
+
